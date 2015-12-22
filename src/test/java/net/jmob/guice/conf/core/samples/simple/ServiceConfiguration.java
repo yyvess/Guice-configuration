@@ -15,11 +15,14 @@
  */
 package net.jmob.guice.conf.core.samples.simple;
 
+import org.hibernate.validator.constraints.Length;
+
 import java.util.List;
 import java.util.Map;
 
 public interface ServiceConfiguration {
 
+    @Length(min = 5)
     String getValue();
 
     Map<String, String> getAMap();

@@ -1,18 +1,20 @@
-Guice configuration module, JSON, HOCON & properties formats supported, build on the top of Typesafe config
+Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of 
+Typesafe config
 
 Guice-conf
 ======
 
-Configure easily your applications with JSON files
+Configure easily your applications
 
 ## Overview
 
-- JSON,  HOCON and properties formats
+- JSON, HOCON and Properties formats
 - Guice injection 
+- Validation
 
 ##Binary Releases
 
-You can find published releases (compiled for Java 7 and above) on Maven Central.
+You can find published releases on Maven Central.
 
 		<dependency>
 			<groupId>net.jmob</groupId>
@@ -20,7 +22,7 @@ You can find published releases (compiled for Java 7 and above) on Maven Central
 			<version>1.0.0</version>
 		</dependency>
 		
-To active beans validation, you must import a validator like Hibernate validator
+To active validation, you must import a validator like Hibernate validator
 		
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -34,9 +36,7 @@ Link for direct download if you don't use a dependency manager:
  - http://central.maven.org/maven2/net/jmob/guice.conf/
  
  
-## Library usage
-
-####Sample usage
+## Quickstart
 
 File `app.json` :
 
@@ -62,6 +62,7 @@ Use a interface to inject complex data structure
 ```java  
    public interface ServiceConfiguration {
 
+      @Length(min = 5)
       String getValue();
     
       Map<String, String> getAMap();
@@ -70,7 +71,7 @@ Use a interface to inject complex data structure
    }
 ```
 
-Inject it on a Service
+And inject it on a Service
 ```java  
     @BindConfig(value = "app", syntax = JSON)
     public class Service {
@@ -95,8 +96,8 @@ Inject it on a Service
     public class GuiceModule extends AbstractModule {
         @Override
         protected void configure() {
-            install(Configuration.create());
-            bind(Service.class);
+            install(ConfigurationModule.create());
+            requestInjection(Service.class);
         }
     }
 ```
