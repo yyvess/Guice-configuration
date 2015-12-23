@@ -23,18 +23,18 @@ import java.lang.reflect.Field;
 public class Injector<T> implements MembersInjector<T> {
 
     private final Field field;
-    private final Object bean;
+    private final Object value;
 
     Injector(VirtualBeanFactory virtualBeanFactory) {
         this.field = virtualBeanFactory.getField();
-        this.bean = virtualBeanFactory.buildProxy();
+        this.value = virtualBeanFactory.buildProxy();
         field.setAccessible(true);
     }
 
     @Override
-    public void injectMembers(Object t) {
+    public void injectMembers(T bean) {
         try {
-            field.set(t, bean);
+            field.set(bean, value);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
