@@ -22,8 +22,11 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
+import static java.lang.Character.toUpperCase;
 import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 
 final class VirtualBean implements InvocationHandler {
 
@@ -35,7 +38,7 @@ final class VirtualBean implements InvocationHandler {
 
     public VirtualBean(Map<String, Object> values) {
         for (Entry<String, Object> e : values == null ? this.values.entrySet() : values.entrySet()) {
-            this.values.put(toGetMethod(e.getKey()), e.getValue());
+            this.values.put(toGetMethodName(e.getKey()), e.getValue());
         }
     }
 
@@ -44,7 +47,7 @@ final class VirtualBean implements InvocationHandler {
         String methodName = method.getName();
         int nbArgs = nbArgs(args);
         if (methodName.startsWith(GET_PREFIX) && nbArgs == 0) {
-            return magicGet(methodName);
+            return magicGet(methodName, Optional.class.isAssignableFrom(method.getReturnType()));
         } else if (methodName.equals(HASH_CODE_METHOD) && nbArgs == 0) {
             return hashCode();
         } else if (methodName.equals(TO_STRING_METHOD) && nbArgs == 0) {
@@ -55,19 +58,19 @@ final class VirtualBean implements InvocationHandler {
         throw new RuntimeException(format("Incorrect method name %s:%s", methodName, nbArgs));
     }
 
-    private Object magicGet(String methodName) {
-        return this.values.get(methodName);
+    private Object magicGet(String methodName, boolean optional) {
+        return optional ? ofNullable(this.values.get(methodName)) : this.values.get(methodName);
     }
 
     private int nbArgs(Object[] args) {
         return args == null ? 0 : args.length;
     }
 
-    private String toGetMethod(String propertyName) {
+    private String toGetMethodName(String propertyName) {
         if (propertyName.length() <= 1) {
             return GET_PREFIX + propertyName.toUpperCase();
         }
-        return GET_PREFIX + propertyName.substring(0, 1).toUpperCase().concat(propertyName.substring(1));
+        return GET_PREFIX + toUpperCase(propertyName.charAt(0)) + propertyName.substring(1);
     }
 
     @Override

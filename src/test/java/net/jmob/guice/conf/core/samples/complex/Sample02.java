@@ -25,8 +25,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.google.inject.Guice.createInjector;
-import static org.junit.Assert.assertEquals;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", path = "root")
 public class Sample02 {
@@ -44,20 +48,24 @@ public class Sample02 {
 
     @Test
     public void test() {
-        assertEquals(12, port);
-        assertNotNull(config);
-        assertEquals("Hello World", config.getValue());
+        assertThat(port, is(12));
+        assertThat(config, notNullValue());
+        assertThat(config.getValue(), is("Hello World"));
         assertNotNull(config.getAMap());
-        assertEquals("value1", config.getAMap().get("key1"));
-        assertEquals("value2", config.getAMap().get("key2"));
-        assertEquals("value1", config.getAList().get(0));
-        assertEquals("value2", config.getAList().get(1));
-        assertEquals("Hello 1", config.getTypedMap().get("entry1").getValue());
-        assertEquals(1234, config.getTypedMap().get("entry1").getIntValue());
-        assertEquals("Hello 2", config.getTypedMap().get("entry2").getValue());
-        assertEquals("{getAList=[value1, value2], getValue=Hello World, getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, getAMap={key1=value1, key2=value2}}"
-                , config.toString());
-        assertEquals(-1633332542, config.hashCode());
+        assertThat(config.getAMap(), notNullValue());
+        assertThat(config.getAMap().get("key1"), is("value1"));
+        assertThat(config.getAMap().get("key2"), is("value2"));
+        assertThat(config.getAList().get(0), is("value1"));
+        assertThat(config.getAList().get(1), is("value2"));
+        assertThat(config.getValue(), is("Hello World"));
+        assertThat(config.getTypedMap().get("entry1").getValue(), is("Hello 1"));
+        assertThat(config.getTypedMap().get("entry1").getIntValue(), is(of(1234)));
+        assertThat(config.getTypedMap().get("entry2").getValue(), is("Hello 2"));
+        assertThat(config.getTypedMap().get("entry2").getIntValue(), is(empty()));
+        assertThat(config.toString(), is("{getAList=[value1, value2], getValue=Hello World, " +
+                "getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, " +
+                "getAMap={key1=value1, key2=value2}}"));
+        assertThat(config.hashCode(), is(-1633332542));
     }
 
     public static class SampleModule extends AbstractModule {

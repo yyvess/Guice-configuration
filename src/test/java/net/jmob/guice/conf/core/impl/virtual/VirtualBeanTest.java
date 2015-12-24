@@ -23,12 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Thread.currentThread;
-import static org.junit.Assert.*;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.hamcrest.core.IsSame.sameInstance;
+import static org.junit.Assert.assertThat;
 
 public class VirtualBeanTest {
 
     @Test
-    public void test() {
+    public void nomi() {
         Map<String, Object> values = new HashMap<>();
         values.put("v", "short");
         values.put("value", "testing");
@@ -36,18 +40,19 @@ public class VirtualBeanTest {
         ServiceConfig service = newProxy(values);
         ServiceConfig service2 = newProxy(values);
 
-        assertEquals(1, service.getInt());
-        assertEquals("short", service.getV());
-        assertEquals("testing", service.getValue());
-        assertNull(service.getValueNull());
-        assertEquals("{getV=short, getValue=testing, getInt=1}", service.toString());
-
-        assertNotSame(service, service2);
-        assertEquals(service, service);
-        assertEquals(service, service2);
-        assertEquals(service.hashCode(), service2.hashCode());
-        assertFalse(service2.equals(null));
-        assertFalse(service2.equals(new Object()));
+        assertThat(service.getInt(), is(1));
+        assertThat(service.getV(), is("short"));
+        assertThat(service.getValue(), is("testing"));
+        assertThat(service.getValueNull(), nullValue());
+        assertThat(service.toString(), is("{getV=short, getValue=testing, getInt=1}"));
+        assertThat(service, sameInstance((service)));
+        assertThat(service, not(sameInstance(service2)));
+        assertThat(service2.equals(null), is(false));
+        assertThat(service.equals(service), is(true));
+        assertThat(service, is(service2));
+        assertThat(service.hashCode(), is(service2.hashCode()));
+        assertThat(service2, not(is(nullValue())));
+        assertThat(service2, not(is(new Object())));
     }
 
     @Test(expected = RuntimeException.class)

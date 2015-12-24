@@ -30,8 +30,10 @@ import org.junit.Test;
 import javax.inject.Named;
 
 import static com.google.inject.name.Names.named;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 public class Sample03 {
 
@@ -50,28 +52,32 @@ public class Sample03 {
 
     @Test
     public void testConf() {
-        assertEquals(12, serviceConf.getPort());
+        assertThat(serviceConf.getPort(), is(12));
         check(serviceConf);
     }
 
     @Test
     public void testJson() {
-        assertEquals(13, serviceJson.getPort());
+        assertThat(serviceJson.getPort(), is(13));
         check(serviceJson);
     }
 
     private void check(Service service) {
         final TypedEntry config = service.getConfig();
-        assertNotNull(config);
-        assertEquals("Hello World", config.getValue());
+        assertThat(config, notNullValue());
+
+        assertThat(config.getValue(), is("Hello World"));
         assertNotNull(config.getAMap());
-        assertEquals("value1", config.getAMap().get("key1"));
-        assertEquals("value2", config.getAMap().get("key2"));
-        assertEquals("value1", config.getAList().get(0));
-        assertEquals("value2", config.getAList().get(1));
-        assertEquals("{getAList=[value1, value2], getValue=Hello World, getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, getAMap={key1=value1, key2=value2}}"
-                , config.toString());
-        assertEquals(-1633332542, config.hashCode());
+        assertThat(config.getAMap(), notNullValue());
+        assertThat(config.getAMap().get("key1"), is("value1"));
+        assertThat(config.getAMap().get("key2"), is("value2"));
+        assertThat(config.getAList().get(0), is("value1"));
+        assertThat(config.getAList().get(1), is("value2"));
+
+        assertThat(config.toString(), is("{getAList=[value1, value2], getValue=Hello World, " +
+                "getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, " +
+                "getAMap={key1=value1, key2=value2}}"));
+        assertThat(config.hashCode(), is(-1633332542));
     }
 
     public static class SampleModule extends AbstractModule {
