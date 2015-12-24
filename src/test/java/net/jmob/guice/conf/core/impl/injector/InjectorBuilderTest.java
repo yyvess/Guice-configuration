@@ -18,8 +18,6 @@ package net.jmob.guice.conf.core.impl.injector;
 import com.typesafe.config.ConfigException;
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.InjectConfig;
-import org.hamcrest.core.Is;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -45,7 +43,7 @@ public class InjectorBuilderTest {
     }
 
     @Test(expected = ConfigException.class)
-    public void invaliePath () {
+    public void invalidPath () {
         new InjectorBuilder(InvalidPath.class).build();
     }
 

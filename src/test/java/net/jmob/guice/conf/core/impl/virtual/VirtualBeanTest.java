@@ -45,7 +45,7 @@ public class VirtualBeanTest {
         assertThat(service.getValue(), is("testing"));
         assertThat(service.getValueNull(), nullValue());
         assertThat(service.toString(), is("{getV=short, getValue=testing, getInt=1}"));
-        assertThat(service, sameInstance((service)));
+        assertThat(service, sameInstance(service));
         assertThat(service, not(sameInstance(service2)));
         assertThat(service2.equals(null), is(false));
         assertThat(service.equals(service), is(true));
