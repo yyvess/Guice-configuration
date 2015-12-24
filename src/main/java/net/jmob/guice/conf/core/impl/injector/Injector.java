@@ -27,7 +27,7 @@ public class Injector<T> implements MembersInjector<T> {
 
     Injector(VirtualBeanFactory virtualBeanFactory) {
         this.field = virtualBeanFactory.getField();
-        this.value = virtualBeanFactory.buildProxy();
+        this.value = virtualBeanFactory.buildValue();
         field.setAccessible(true);
     }
 

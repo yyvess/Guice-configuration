@@ -23,10 +23,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,7 +43,7 @@ public class InjectorTest {
     }
 
     @Test
-        public void injectNull() throws IllegalAccessException, NoSuchFieldException {
+    public void injectNull() throws IllegalAccessException, NoSuchFieldException {
         inject(null, true);
     }
 
@@ -63,13 +62,14 @@ public class InjectorTest {
         final Field field = this.getClass().getDeclaredField("target");
 
         when(virtualBeanFactory.getField()).thenReturn(field);
-        when(virtualBeanFactory.buildProxy()).thenReturn(value);
+        when(virtualBeanFactory.buildValue()).thenReturn(value);
 
         Injector injector = new Injector(virtualBeanFactory);
         if (!accessible) {
             field.setAccessible(accessible);
         }
         injector.injectMembers(this);
-        assertEquals(field.get(this), value);
+
+        assertThat(value, is(field.get(this)));
     }
 }

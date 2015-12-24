@@ -77,7 +77,7 @@ And inject it on a Service
     public class Service {
 
         @InjectConfig
-        private int port;
+        private Optional<Integer> port;
 
         @InjectConfig("complexType")
         private ServiceConfiguration config;
@@ -101,6 +101,13 @@ And inject it on a Service
         }
     }
 ```
+## Supported types
+
+- String
+- int, Integer, double, Double
+- List<?>, Map<?>
+- Optional<?>
+- Any Interface, a proxy of this interface is injected
 
 ## References
 

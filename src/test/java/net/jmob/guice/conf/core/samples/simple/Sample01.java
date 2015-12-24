@@ -22,15 +22,34 @@ import net.jmob.guice.conf.core.InjectConfig;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.google.inject.Guice.createInjector;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_01")
-public class SampleConf {
+public class Sample01 {
 
     @InjectConfig
     private int port;
+
+    @InjectConfig
+    private Double aDouble;
+
+    @InjectConfig
+    private Integer aInteger;
+
+    @InjectConfig
+    private List<Integer> aIntList;
+
+    @InjectConfig
+    private Optional<Integer> aOptionalInteger;
+
+    @InjectConfig
+    private Optional<Integer> emptyInteger;
 
     @InjectConfig("complexType")
     private ServiceConfiguration config;
@@ -42,14 +61,23 @@ public class SampleConf {
 
     @Test
     public void test() {
-        assertEquals(12, port);
-        assertNotNull(config);
-        assertEquals("Hello World", config.getValue());
-        assertNotNull(config.getAMap());
-        assertEquals("value1", config.getAMap().get("key1"));
-        assertEquals("value2", config.getAMap().get("key2"));
-        assertEquals("value1", config.getAList().get(0));
-        assertEquals("value2", config.getAList().get(1));
+        assertThat(port, is(12));
+        assertThat(aDouble, is(22.55));
+        assertThat(aInteger, is(44));
+        assertThat(aInteger, is(44));
+        assertThat(aOptionalInteger, is(Optional.of(423)));
+        assertThat(emptyInteger, is(Optional.empty()));
+
+        assertThat(aIntList, notNullValue());
+        assertThat(aIntList.get(0), is(67));
+
+        assertThat(config, notNullValue());
+        assertThat(config.getValue(), is("Hello World"));
+        assertThat(config.getAMap(), notNullValue());
+        assertThat(config.getAMap().get("key1"), is("value1"));
+        assertThat(config.getAMap().get("key2"), is("value2"));
+        assertThat(config.getAList().get(0), is("value1"));
+        assertThat(config.getAList().get(1), is("value2"));
     }
 
     public static class SampleModule extends AbstractModule {

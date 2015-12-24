@@ -16,7 +16,6 @@
 
 package net.jmob.guice.conf.core.impl.injector;
 
-import com.google.common.base.Strings;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigParseOptions;
 import com.typesafe.config.ConfigSyntax;
@@ -27,6 +26,7 @@ import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.typesafe.config.ConfigFactory.parseResourcesAnySyntax;
 import static com.typesafe.config.ConfigParseOptions.defaults;
 import static java.util.Arrays.asList;
@@ -40,10 +40,10 @@ public class InjectorBuilder {
 
     public InjectorBuilder(Class beanClass) {
         this.beanClass = beanClass;
-        if (getPath().isEmpty()) {
-            this.config = parseResourcesAnySyntax(getResourceName(), getOptions());
+        if (getAnnotationPath().isEmpty()) {
+            this.config = parseResourcesAnySyntax(getAnnotationValue(), getOptions());
         } else {
-            this.config = parseResourcesAnySyntax(getResourceName(), getOptions()).getConfig(getPath());
+            this.config = parseResourcesAnySyntax(getAnnotationValue(), getOptions()).getConfig(getAnnotationPath());
         }
     }
 
@@ -52,31 +52,30 @@ public class InjectorBuilder {
                 .filter(f -> f.isAnnotationPresent(InjectConfig.class))
                 .map(f -> virtualBeanFactory
                         .withConfig(this.config)
-                        .withPath(getPath(f))
-                        .withPrimitive(f.getType().isPrimitive())
-                        .withClassName(f.getType().getCanonicalName())
+                        .withPath(getAnnotationPath(f))
+                        .withType(f.getType())
                         .withField(f))
                 .map(Injector::new);
     }
 
-    private String getPath(Field f) {
+    private String getAnnotationPath(Field f) {
         final String annotationValue = f.getAnnotationsByType(InjectConfig.class)[0].value();
-        return Strings.isNullOrEmpty(annotationValue) ? f.getName() : annotationValue;
+        return isNullOrEmpty(annotationValue) ? f.getName() : annotationValue;
     }
 
-    private String getPath() {
-        return getConfiguration().path();
+    private String getAnnotationPath() {
+        return getAnnotationConfiguration().path();
     }
 
-    private String getResourceName() {
-        return getConfiguration().value();
+    private String getAnnotationValue() {
+        return getAnnotationConfiguration().value();
     }
 
     private ConfigParseOptions getOptions() {
-        return defaults().setSyntax(ConfigSyntax.valueOf(getConfiguration().syntax().name()));
+        return defaults().setSyntax(ConfigSyntax.valueOf(getAnnotationConfiguration().syntax().name()));
     }
 
-    private BindConfig getConfiguration() {
+    private BindConfig getAnnotationConfiguration() {
         return (BindConfig) beanClass.getAnnotationsByType(BindConfig.class)[0];
     }
 }
