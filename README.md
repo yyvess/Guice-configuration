@@ -1,10 +1,12 @@
 Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of 
 Typesafe config
 
-Guice-conf
-======
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)]
+(https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
+[![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
 
-Configure easily your applications
+Guice-configuration
+======
 
 ## Overview
 
@@ -30,11 +32,6 @@ To active validation, you must import a validator like Hibernate validator
             <version>5.2.2.Final</version>
             <scope>test</scope>
         </dependency>
-
-Link for direct download if you don't use a dependency manager:
-
- - http://central.maven.org/maven2/net/jmob/guice.conf/
- 
  
 ## Quickstart
 
