@@ -21,7 +21,7 @@ You can find published releases on Maven Central.
 		<dependency>
 			<groupId>net.jmob</groupId>
 			<artifactId>guice.conf</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 		</dependency>
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
