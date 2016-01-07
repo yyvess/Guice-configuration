@@ -24,7 +24,7 @@ You can find published releases on Maven Central.
 			<version>1.1.0</version>
 		</dependency>
 		
-To active validation, you must import a validator like Hibernate validator
+Optionally, to active validation, you must import a validator like Hibernate validator
 		
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -32,6 +32,11 @@ To active validation, you must import a validator like Hibernate validator
             <version>5.2.2.Final</version>
             <scope>test</scope>
         </dependency>
+
+Link for direct download if you don't use a dependency manager:
+
+ - http://central.maven.org/maven2/net/jmob/guice.conf/
+ 
  
 ## Quickstart
 
@@ -39,9 +44,9 @@ File `app.json` :
 
 ```javascript
 {
-  "port": 12,
+  "port": 8080,
   "complexType": {
-    "value": "Hello World",
+    "hostname": "www.github.com",
     "aMap": {
       "key1": "value1",
       "key2": "value2"
@@ -60,7 +65,7 @@ Use a interface to inject complex data structure
    public interface ServiceConfiguration {
 
       @Length(min = 5)
-      String getValue();
+      String getHostname();
     
       Map<String, String> getAMap();
     
@@ -98,11 +103,14 @@ And inject it on a Service
         }
     }
 ```
+
+More examples on src/test
+
 ## Supported types
 
 - String
 - int, Integer, double, Double
-- List<?>, Map<?>
+- List<?>, Map<?>, with typed value support
 - Optional<?>
 - Any Interface, a proxy of this interface is injected
 
@@ -115,5 +123,4 @@ And inject it on a Service
 
 The license is Apache 2.0, see LICENSE file.
 
-Copyright (c) 2015, Yves Galante
-
+Copyright (c) 2015-2016, Yves Galante
