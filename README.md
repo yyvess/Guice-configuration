@@ -10,8 +10,8 @@ Guice-configuration
 
 ## Overview
 
-- JSON, HOCON and Properties formats
 - Guice injection 
+- JSON, HOCON and Properties formats
 - Validation
 
 ##Binary Releases
