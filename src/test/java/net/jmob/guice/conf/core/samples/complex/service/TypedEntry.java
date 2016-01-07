@@ -33,6 +33,8 @@ public interface TypedEntry {
 
     List<String> getAList();
 
+    SubType getSubType();
+
     @Typed(SubType.class)
     Map<String, SubType> getTypedMap();
 }

@@ -25,29 +25,30 @@ import org.junit.Test;
 
 import static com.google.inject.Guice.createInjector;
 import static net.jmob.guice.conf.core.Syntax.PROPERTIES;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_00", syntax = PROPERTIES)
-public class SampleProperties {
+public class Sample00 {
 
     @InjectConfig(value = "value")
     private String value;
 
     @Before
     public void init() {
-        createInjector(new SampleModule(this));
+        createInjector(new GuiceModule(this));
     }
 
     @Test
     public void test() {
-        assertEquals("1234", value);
+        assertThat(value, is("1234"));
     }
 
-    public static class SampleModule extends AbstractModule {
+    public static class GuiceModule extends AbstractModule {
 
         private final Object test;
 
-        public SampleModule(Object test) {
+        public GuiceModule(Object test) {
             this.test = test;
         }
 

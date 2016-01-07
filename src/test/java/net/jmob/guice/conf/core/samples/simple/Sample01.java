@@ -56,7 +56,7 @@ public class Sample01 {
 
     @Before
     public void init() {
-        createInjector(new SampleModule(this));
+        createInjector(new GuiceModule(this));
     }
 
     @Test
@@ -80,11 +80,11 @@ public class Sample01 {
         assertThat(config.getAList().get(1), is("value2"));
     }
 
-    public static class SampleModule extends AbstractModule {
+    public static class GuiceModule extends AbstractModule {
 
         private final Object test;
 
-        public SampleModule(Object test) {
+        public GuiceModule(Object test) {
             this.test = test;
         }
 

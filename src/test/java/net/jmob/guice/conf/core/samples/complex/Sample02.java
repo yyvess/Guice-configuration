@@ -43,7 +43,7 @@ public class Sample02 {
 
     @Before
     public void init() {
-        createInjector(new SampleModule(this));
+        createInjector(new GuiceModule(this));
     }
 
     @Test
@@ -51,6 +51,8 @@ public class Sample02 {
         assertThat(port, is(12));
         assertThat(config, notNullValue());
         assertThat(config.getValue(), is("Hello World"));
+        assertNotNull(config.getSubType());
+        assertThat(config.getSubType().getIntValue(), is(of(9876)));
         assertNotNull(config.getAMap());
         assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap().get("key1"), is("value1"));
@@ -64,15 +66,15 @@ public class Sample02 {
         assertThat(config.getTypedMap().get("entry2").getIntValue(), is(empty()));
         assertThat(config.toString(), is("{getAList=[value1, value2], getValue=Hello World, " +
                 "getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, " +
-                "getAMap={key1=value1, key2=value2}}"));
-        assertThat(config.hashCode(), is(-1633332542));
+                "getSubType={getIntValue=9876}, getAMap={key1=value1, key2=value2}}"));
+        assertThat(config.hashCode(), is(-247958911));
     }
 
-    public static class SampleModule extends AbstractModule {
+    public static class GuiceModule extends AbstractModule {
 
         private final Object test;
 
-        public SampleModule(Object test) {
+        public GuiceModule(Object test) {
             this.test = test;
         }
 

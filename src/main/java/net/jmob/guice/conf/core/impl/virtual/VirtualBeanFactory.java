@@ -17,10 +17,8 @@
 package net.jmob.guice.conf.core.impl.virtual;
 
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigException;
 import com.typesafe.config.ConfigValue;
 import net.jmob.guice.conf.core.impl.Typed;
-import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,17 +37,15 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toMap;
-import static org.slf4j.LoggerFactory.getLogger;
 
 public class VirtualBeanFactory {
 
     private static final String GET_METHOD_PATTERN = VirtualBean.GET_PREFIX + ".+";
-    private static final List<Class> SUPPORTED_TYPES = asList(int.class, Integer.class,
-            double.class, Double.class, String.class, Map.class, List.class);
+    private static final int GET_PREFIX_SIZE = VirtualBean.GET_PREFIX.length();
+    private static final List<Class> SUPPORTED_TYPES
+            = asList(int.class, Integer.class, double.class, Double.class, String.class, Map.class, List.class);
 
     private final BeanValidator beanValidator = new BeanValidator();
-
-    private final Logger log = getLogger(this.getClass());
 
     private Class<?> type;
     private boolean optionalType;
@@ -88,7 +84,7 @@ public class VirtualBeanFactory {
         } else if (optionalType || SUPPORTED_TYPES.contains(type)) {
             return config.getAnyRef(path);
         } else if (!type.isInterface()) {
-            throw new RuntimeException(format("Type is not supported, must be a interface : %s", this.type));
+            throw new RuntimeException(format("Type not supported, must be a interface : %s", this.type));
         }
         return newProxyInstance(type, mapProperties(type, getProperties()));
     }
@@ -103,36 +99,49 @@ public class VirtualBeanFactory {
 
     private Map<String, Object> mapProperties(Class beanInterface, Map<String, Object> values) {
         return values.entrySet().stream()
-                .map(e -> mapChild(beanInterface, e).orElse(e))
+                .map(e -> mapCandidateChild(beanInterface, e).orElse(e))
                 .collect(toMap(Entry::getKey, Entry::getValue));
     }
 
-    private Optional<Entry<String, Object>> mapChild(Class beanInterface, Entry<String, Object> e) {
+    private Optional<Entry<String, Object>> mapCandidateChild(Class beanInterface, Entry<String, Object> e) {
         return asList(beanInterface.getMethods()).stream()
                 .filter(f -> isCandidateMethod(e.getKey(), f))
                 .filter(f -> e.getValue() instanceof Map)
-                .map(f -> buildChildEntries(e.getKey(), f, (Map) e.getValue()))
+                .map(f -> buildChildEntry(e.getKey(), f, (Map) e.getValue()))
                 .findFirst();
     }
 
     private boolean isCandidateMethod(String key, Method method) {
-        return method.isAnnotationPresent(Typed.class)
+        return (method.getReturnType().isInterface() && !SUPPORTED_TYPES.contains(method.getReturnType())
+                || isAnnotationTypedPresent(method))
                 && method.getName().matches(GET_METHOD_PATTERN)
                 && toPropertyName(method.getName()).equals(key);
     }
 
-    private Entry<String, Object> buildChildEntries(String key, Method f, Map<String, Object> values) {
+    private Entry<String, Object> buildChildEntry(String key, Method m, Map<String, Object> values) {
+        if (!isAnnotationTypedPresent(m)) {
+            return new SimpleImmutableEntry<>(buildChildEntry(m, key, values));
+        }
         return new SimpleImmutableEntry<>(key, values.entrySet().stream()
-                .map(e -> buildChildEntry(f, e))
+                .map(e -> buildChildEntry(m, e.getKey(), (Map<String, Object>) e.getValue()))
                 .collect(toMap(Entry::getKey, Entry::getValue)));
     }
 
-    private Entry<String, Map> buildChildEntry(Method f, Entry<String, Object> e) {
-        return new SimpleImmutableEntry(e.getKey(), newProxyInstance(f.getAnnotationsByType(Typed.class)[0].value(), (Map) e.getValue()));
+    private Entry<String, Map> buildChildEntry(Method m, String key, Map<String, Object> values) {
+        return new SimpleImmutableEntry(key, newProxyInstance(getType(m), values));
+    }
+
+    private Class getType(Method m) {
+        return isAnnotationTypedPresent(m) ? m.getAnnotationsByType(Typed.class)[0].value() : m.getReturnType();
+    }
+
+    private boolean isAnnotationTypedPresent(Method m) {
+        return m.isAnnotationPresent(Typed.class);
     }
 
     private String toPropertyName(String methodName) {
-        return methodName.substring(3).substring(0, 1).toLowerCase().concat(methodName.substring(4));
+        return methodName.substring(GET_PREFIX_SIZE).substring(0, 1).toLowerCase()
+                .concat(methodName.substring(GET_PREFIX_SIZE + 1));
     }
 
     private Map<String, Object> getProperties() {
@@ -142,12 +151,9 @@ public class VirtualBeanFactory {
     }
 
     private Set<Entry<String, ConfigValue>> getRawProperties() {
-        try {
-            return config.getConfig(path).root().entrySet();
-        } catch (ConfigException.Missing e) {
-            this.log.debug(format("No configuration found on path %s", path));
-        }
-        return emptySet();
+        return ofNullable(config.getConfig(path))
+                .map(c -> c.root().entrySet())
+                .orElse(emptySet());
     }
 
     public VirtualBeanFactory withPath(String path) {

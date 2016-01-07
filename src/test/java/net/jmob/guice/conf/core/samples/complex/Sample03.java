@@ -47,7 +47,7 @@ public class Sample03 {
 
     @Before
     public void init() {
-        Guice.createInjector(new SampleModule(this));
+        Guice.createInjector(new GuiceModule(this));
     }
 
     @Test
@@ -73,18 +73,17 @@ public class Sample03 {
         assertThat(config.getAMap().get("key2"), is("value2"));
         assertThat(config.getAList().get(0), is("value1"));
         assertThat(config.getAList().get(1), is("value2"));
-
         assertThat(config.toString(), is("{getAList=[value1, value2], getValue=Hello World, " +
                 "getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, " +
-                "getAMap={key1=value1, key2=value2}}"));
-        assertThat(config.hashCode(), is(-1633332542));
+                "getSubType={getIntValue=9876}, getAMap={key1=value1, key2=value2}}"));
+        assertThat(config.hashCode(), is(-247958911));
     }
 
-    public static class SampleModule extends AbstractModule {
+    public static class GuiceModule extends AbstractModule {
 
         private final Sample03 sample03;
 
-        public SampleModule(Sample03 sample03) {
+        public GuiceModule(Sample03 sample03) {
             this.sample03 = sample03;
         }
 
