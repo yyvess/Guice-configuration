@@ -26,12 +26,16 @@ You can find published releases on Maven Central.
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
 		
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator-cdi</artifactId>
-            <version>5.2.2.Final</version>
-            <scope>test</scope>
-        </dependency>
+	    <dependency>
+	      <groupId>org.hibernate</groupId>
+	      <artifactId>hibernate-validator-cdi</artifactId>
+	      <version>5.2.2.Final</version>
+	    </dependency>
+	    <dependency>
+	      <groupId>javax.el</groupId>
+	      <artifactId>javax.el-api</artifactId>
+	      <version>2.2.4</version>
+	    </dependency>
 
 Link for direct download if you don't use a dependency manager:
 
