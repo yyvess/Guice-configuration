@@ -5,7 +5,7 @@ Typesafe config
 (https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
 [![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
 
-Guice-configuration
+Guice configuration
 ======
 
 ## Overview
