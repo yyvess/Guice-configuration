@@ -14,7 +14,7 @@ Guice configuration
 - JSON, HOCON and Properties formats
 - Validation
 
-##Binary Releases
+## Binary Releases
 
 You can find published releases on Maven Central.
 
