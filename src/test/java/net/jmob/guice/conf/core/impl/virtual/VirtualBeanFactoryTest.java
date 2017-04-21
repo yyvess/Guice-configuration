@@ -15,16 +15,12 @@
  */
 package net.jmob.guice.conf.core.impl.virtual;
 
-import com.google.common.collect.ImmutableMap;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigObject;
-import com.typesafe.config.ConfigValue;
-import net.jmob.guice.conf.core.impl.Typed;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.powermock.modules.junit4.PowerMockRunner;
+import static com.google.common.collect.ImmutableMap.of;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
 import java.util.AbstractMap;
@@ -33,16 +29,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.collect.ImmutableMap.of;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.when;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-@RunWith(PowerMockRunner.class)
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigObject;
+import com.typesafe.config.ConfigValue;
+
+import net.jmob.guice.conf.core.impl.Typed;
+
 public class VirtualBeanFactoryTest {
 
+    @Rule
+    public MockitoRule mockito = MockitoJUnit.rule();
 
     @Mock
     private Config config;
@@ -155,7 +158,7 @@ public class VirtualBeanFactoryTest {
         Object value = virtualBeanFactory.buildValue();
 
         assertThat(value, instanceOf(InterfaceForTest.class));
-        assertThat(((InterfaceForTest) value).getInteger(), is(isNull()));
+        assertThat(((InterfaceForTest) value).getInteger(), is(nullValue()));
     }
 
     public interface InterfaceForTest {

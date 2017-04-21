@@ -15,21 +15,25 @@
  */
 package net.jmob.guice.conf.core.impl.injector;
 
-import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
+
 public class InjectorTest {
+
+    @Rule
+    public MockitoRule mockito = MockitoJUnit.rule();
 
     private String target = "Test";
 

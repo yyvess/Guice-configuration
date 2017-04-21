@@ -14,27 +14,11 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.samples.complex.service;
+package net.jmob.guice.conf.core.samples.advenced.service;
 
-import net.jmob.guice.conf.core.impl.Typed;
-import org.hibernate.validator.constraints.Length;
+public interface Service {
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+    int getPort();
 
-public interface TypedEntry {
-
-    @NotNull
-    @Length(min = 5)
-    String getValue();
-
-    Map<String, String> getAMap();
-
-    List<String> getAList();
-
-    SubType getSubType();
-
-    @Typed(SubType.class)
-    Map<String, SubType> getTypedMap();
+    TypedEntry getConfig();
 }

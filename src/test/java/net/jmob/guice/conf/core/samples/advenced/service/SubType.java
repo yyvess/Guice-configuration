@@ -1,4 +1,4 @@
-package net.jmob.guice.conf.core.samples.complex.service;
+package net.jmob.guice.conf.core.samples.advenced.service;
 
 import org.hibernate.validator.constraints.Length;
 

@@ -13,46 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core.samples.simple;
 
-import com.google.inject.AbstractModule;
-import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.ConfigurationModule;
-import net.jmob.guice.conf.core.InjectConfig;
+package net.jmob.guice.conf.core.samples.advenced;
+
+import static com.google.inject.Guice.createInjector;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.Optional;
+import com.google.inject.AbstractModule;
 
-import static com.google.inject.Guice.createInjector;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
+import net.jmob.guice.conf.core.BindConfig;
+import net.jmob.guice.conf.core.ConfigurationModule;
+import net.jmob.guice.conf.core.InjectConfig;
+import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
 
-@BindConfig(value = "net/jmob/guice/conf/core/samples/sample_01")
-public class Sample01 {
+@BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", path = "root")
+public class DeepStructure {
 
-    @InjectConfig
+    @InjectConfig(value = "port")
     private int port;
 
-    @InjectConfig
-    private Double aDouble;
-
-    @InjectConfig
-    private Integer aInteger;
-
-    @InjectConfig
-    private List<Integer> aIntList;
-
-    @InjectConfig
-    private Optional<Integer> aOptionalInteger;
-
-    @InjectConfig
-    private Optional<Integer> emptyInteger;
-
     @InjectConfig("complexType")
-    private ServiceConfiguration config;
+    private TypedEntry config;
 
     @Before
     public void init() {
@@ -62,22 +51,25 @@ public class Sample01 {
     @Test
     public void test() {
         assertThat(port, is(12));
-        assertThat(aDouble, is(22.55));
-        assertThat(aInteger, is(44));
-        assertThat(aInteger, is(44));
-        assertThat(aOptionalInteger, is(Optional.of(423)));
-        assertThat(emptyInteger, is(Optional.empty()));
-
-        assertThat(aIntList, notNullValue());
-        assertThat(aIntList.get(0), is(67));
-
         assertThat(config, notNullValue());
         assertThat(config.getValue(), is("Hello World"));
+        assertNotNull(config.getSubType());
+        assertThat(config.getSubType().getIntValue(), is(of(9876)));
+        assertNotNull(config.getAMap());
         assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap().get("key1"), is("value1"));
         assertThat(config.getAMap().get("key2"), is("value2"));
         assertThat(config.getAList().get(0), is("value1"));
         assertThat(config.getAList().get(1), is("value2"));
+        assertThat(config.getValue(), is("Hello World"));
+        assertThat(config.getTypedMap().get("entry1").getValue(), is("Hello 1"));
+        assertThat(config.getTypedMap().get("entry1").getIntValue(), is(of(1234)));
+        assertThat(config.getTypedMap().get("entry2").getValue(), is("Hello 2"));
+        assertThat(config.getTypedMap().get("entry2").getIntValue(), is(empty()));
+        assertThat(config.toString(), is("{getAList=[value1, value2], getValue=Hello World, " +
+                "getTypedMap={entry1={getValue=Hello 1, getIntValue=1234}, entry2={getValue=Hello 2}}, " +
+                "getSubType={getIntValue=9876}, getAMap={key1=value1, key2=value2}}"));
+        assertThat(config.hashCode(), is(-247958911));
     }
 
     public static class GuiceModule extends AbstractModule {

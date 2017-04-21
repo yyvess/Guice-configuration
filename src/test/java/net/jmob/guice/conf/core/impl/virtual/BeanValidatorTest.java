@@ -16,21 +16,11 @@
 
 package net.jmob.guice.conf.core.impl.virtual;
 
-import org.hibernate.validator.constraints.Length;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import javax.validation.Validation;
-import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
 
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import org.hibernate.validator.constraints.Length;
+import org.junit.Test;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Validation.class)
 public class BeanValidatorTest {
 
     @Test
@@ -46,14 +36,6 @@ public class BeanValidatorTest {
     @Test(expected = RuntimeException.class)
     public void validationFailInvalidLength() {
         new BeanValidator().valid(new Bean().withValue("123"), Bean.class);
-    }
-
-    @Test
-    public void noValidatorInClasspath() {
-        mockStatic(Validation.class);
-        when(Validation.buildDefaultValidatorFactory())
-                .thenThrow(ValidationException.class);
-        validationFailInvalidLength();
     }
 
     public static class Bean {

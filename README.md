@@ -62,7 +62,7 @@ File `app.json` :
 }
 ```
 
-Use a interface to inject complex data structure
+Use a interface to inject structured data
 
 ```java  
    public interface ServiceConfiguration {
