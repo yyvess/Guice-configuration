@@ -16,39 +16,34 @@
 
 package net.jmob.guice.conf.core.impl.injector;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigParseOptions;
-import com.typesafe.config.ConfigSyntax;
-import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.InjectConfig;
-import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
+import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.typesafe.config.ConfigParseOptions.defaults;
+import static java.util.Arrays.stream;
 
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.typesafe.config.ConfigFactory.parseResourcesAnySyntax;
-import static com.typesafe.config.ConfigParseOptions.defaults;
-import static java.util.Arrays.asList;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigParseOptions;
+import com.typesafe.config.ConfigSyntax;
+
+import net.jmob.guice.conf.core.BindConfig;
+import net.jmob.guice.conf.core.InjectConfig;
+import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
 
 public class InjectorBuilder {
 
     private final VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory();
-
     private final Config config;
     private final Class beanClass;
 
     public InjectorBuilder(Class beanClass) {
         this.beanClass = beanClass;
-        if (getAnnotationPath().isEmpty()) {
-            this.config = parseResourcesAnySyntax(getAnnotationValue(), getOptions());
-        } else {
-            this.config = parseResourcesAnySyntax(getAnnotationValue(), getOptions()).getConfig(getAnnotationPath());
-        }
+        this.config = new ConfigFactory().getConfig(getOptions(), getAnnotationConfiguration());
     }
 
     public Stream<Injector> build() {
-        return asList(this.beanClass.getDeclaredFields()).stream()
+        return stream(this.beanClass.getDeclaredFields())
                 .filter(f -> f.isAnnotationPresent(InjectConfig.class))
                 .map(f -> virtualBeanFactory
                         .withConfig(this.config)
@@ -61,14 +56,6 @@ public class InjectorBuilder {
     private String getAnnotationPath(Field f) {
         final String annotationValue = f.getAnnotationsByType(InjectConfig.class)[0].value();
         return isNullOrEmpty(annotationValue) ? f.getName() : annotationValue;
-    }
-
-    private String getAnnotationPath() {
-        return getAnnotationConfiguration().path();
-    }
-
-    private String getAnnotationValue() {
-        return getAnnotationConfiguration().value();
     }
 
     private ConfigParseOptions getOptions() {

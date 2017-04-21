@@ -16,9 +16,14 @@
 
 package net.jmob.guice.conf.core.impl.virtual;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigValue;
-import net.jmob.guice.conf.core.impl.Typed;
+import static java.lang.String.format;
+import static java.lang.Thread.currentThread;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toMap;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,13 +35,10 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.lang.String.format;
-import static java.lang.Thread.currentThread;
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toMap;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigValue;
+
+import net.jmob.guice.conf.core.impl.Typed;
 
 public class VirtualBeanFactory {
 
@@ -104,7 +106,7 @@ public class VirtualBeanFactory {
     }
 
     private Optional<Entry<String, Object>> mapCandidateChild(Class beanInterface, Entry<String, Object> e) {
-        return asList(beanInterface.getMethods()).stream()
+        return stream(beanInterface.getMethods())
                 .filter(f -> isCandidateMethod(e.getKey(), f))
                 .filter(f -> e.getValue() instanceof Map)
                 .map(f -> buildChildEntry(e.getKey(), f, (Map) e.getValue()))

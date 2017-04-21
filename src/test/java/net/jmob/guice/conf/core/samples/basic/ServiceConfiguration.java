@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core.samples.simple;
+package net.jmob.guice.conf.core.samples.basic;
 
-import net.jmob.guice.conf.core.InjectConfig;
+import org.hibernate.validator.constraints.Length;
 
-public class Service {
-    @InjectConfig
-    private int port;
+import java.util.List;
+import java.util.Map;
 
-    @InjectConfig("complexType")
-    private ServiceConfiguration config;
+public interface ServiceConfiguration {
 
-    public int getPort() {
-        return port;
-    }
+    @Length(min = 5)
+    String getValue();
 
-    public ServiceConfiguration getConfig() {
-        return config;
-    }
+    Map<String, String> getAMap();
+
+    List<String> getAList();
 }

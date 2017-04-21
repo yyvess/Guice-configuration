@@ -34,11 +34,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <guice.version>4.0</guice.version>
         <junit.version>4.12</junit.version>
-        <typesafe.version>1.3.0</typesafe.version>
-        <logback.version>1.1.3</logback.version>
+        <typesafe.version>1.3.1</typesafe.version>
+        <logback.version>1.2.3</logback.version>
         <validation-api.versoin>1.1.0.Final</validation-api.versoin>
-        <mockito.version>1.10.19</mockito.version>
-        <powermock.version>1.6.3</powermock.version>
+        <mockito.version>2.7.22</mockito.version>
     </properties>
 
     <dependencies>
@@ -78,18 +77,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -169,13 +156,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.10</version>
                 <configuration>
-                    <parallel>classes</parallel>
                     <includes>
                         <include>**/*Test.java</include>
                         <include>%regex[.*[Sample]\d+.*]</include>
                     </includes>
+                    <systemProperties>
+                        <property>
+                            <name>my.property</name>
+                            <value>Hello</value>
+                        </property>
+                    </systemProperties>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${java.io.tmpdir}</additionalClasspathElement>
                     </additionalClasspathElements>
@@ -184,7 +175,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
                 <configuration>
                     <quiet>true</quiet>
                     <nonavbar>true</nonavbar>

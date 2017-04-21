@@ -28,5 +28,7 @@ public @interface BindConfig {
 
     String path() default "";
 
+    boolean resolve() default false;
+
     Syntax syntax() default Syntax.CONF;
 }

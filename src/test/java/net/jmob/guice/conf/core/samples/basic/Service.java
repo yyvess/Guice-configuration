@@ -13,12 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package net.jmob.guice.conf.core.samples.basic;
 
-package net.jmob.guice.conf.core.samples.complex.service;
+import net.jmob.guice.conf.core.InjectConfig;
 
-public interface Service {
+public class Service {
+    @InjectConfig
+    private int port;
 
-    int getPort();
+    @InjectConfig("complexType")
+    private ServiceConfiguration config;
 
-    TypedEntry getConfig();
+    public int getPort() {
+        return port;
+    }
+
+    public ServiceConfiguration getConfig() {
+        return config;
+    }
 }

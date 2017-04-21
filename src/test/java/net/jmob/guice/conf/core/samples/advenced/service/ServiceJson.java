@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.samples.complex.service;
+package net.jmob.guice.conf.core.samples.advenced.service;
+
+
+import static net.jmob.guice.conf.core.Syntax.JSON;
 
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.InjectConfig;
 
-@BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", path = "root")
-public class ServiceConf implements Service {
+@BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", syntax = JSON)
+public class ServiceJson implements Service {
 
     @InjectConfig
     private int port;

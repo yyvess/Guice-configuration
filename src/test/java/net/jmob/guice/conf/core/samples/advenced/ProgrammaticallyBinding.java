@@ -14,20 +14,7 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.samples.complex;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import net.jmob.guice.conf.core.ConfigurationModule;
-import net.jmob.guice.conf.core.samples.complex.service.Service;
-import net.jmob.guice.conf.core.samples.complex.service.ServiceConf;
-import net.jmob.guice.conf.core.samples.complex.service.ServiceJson;
-import net.jmob.guice.conf.core.samples.complex.service.TypedEntry;
-import org.junit.Before;
-import org.junit.Test;
-
-import javax.inject.Named;
+package net.jmob.guice.conf.core.samples.advenced;
 
 import static com.google.inject.name.Names.named;
 import static org.hamcrest.core.Is.is;
@@ -35,7 +22,22 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-public class Sample03 {
+import javax.inject.Named;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+
+import net.jmob.guice.conf.core.ConfigurationModule;
+import net.jmob.guice.conf.core.samples.advenced.service.Service;
+import net.jmob.guice.conf.core.samples.advenced.service.ServiceConf;
+import net.jmob.guice.conf.core.samples.advenced.service.ServiceJson;
+import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
+
+public class ProgrammaticallyBinding {
 
     @Inject
     @Named("Conf")
@@ -81,16 +83,16 @@ public class Sample03 {
 
     public static class GuiceModule extends AbstractModule {
 
-        private final Sample03 sample03;
+        private final ProgrammaticallyBinding programmaticallyBinding;
 
-        public GuiceModule(Sample03 sample03) {
-            this.sample03 = sample03;
+        public GuiceModule(ProgrammaticallyBinding programmaticallyBinding) {
+            this.programmaticallyBinding = programmaticallyBinding;
         }
 
         @Override
         protected void configure() {
             install(ConfigurationModule.create());
-            requestInjection(sample03);
+            requestInjection(programmaticallyBinding);
             bind(Service.class).annotatedWith(named("Conf")).to(ServiceConf.class);
             bind(Service.class).annotatedWith(named("Json")).to(ServiceJson.class);
         }
