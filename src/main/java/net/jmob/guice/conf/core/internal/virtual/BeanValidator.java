@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
+package net.jmob.guice.conf.core.internal.virtual;
 
+import com.google.inject.Singleton;
 import org.slf4j.Logger;
 
 import javax.validation.ConstraintViolation;
@@ -27,7 +28,8 @@ import java.util.Set;
 import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
-class BeanValidator {
+@Singleton
+public class BeanValidator {
 
     private final Logger log = getLogger(BeanValidator.class);
     private final ValidatorFactory factory;

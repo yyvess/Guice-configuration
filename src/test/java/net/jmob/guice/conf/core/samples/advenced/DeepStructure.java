@@ -16,6 +16,14 @@
 
 package net.jmob.guice.conf.core.samples.advenced;
 
+import com.google.inject.AbstractModule;
+import net.jmob.guice.conf.core.BindConfig;
+import net.jmob.guice.conf.core.ConfigurationModule;
+import net.jmob.guice.conf.core.InjectConfig;
+import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
+import org.junit.Before;
+import org.junit.Test;
+
 import static com.google.inject.Guice.createInjector;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -23,16 +31,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.inject.AbstractModule;
-
-import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.ConfigurationModule;
-import net.jmob.guice.conf.core.InjectConfig;
-import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", path = "root")
 public class DeepStructure {

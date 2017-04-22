@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
+package net.jmob.guice.conf.core.internal.virtual;
 
 import org.junit.Test;
 
@@ -25,6 +25,7 @@ import java.util.Map;
 import static java.lang.Thread.currentThread;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
@@ -32,7 +33,7 @@ import static org.junit.Assert.assertThat;
 public class VirtualBeanTest {
 
     @Test
-    public void nomi() {
+    public void virtual_bean_test() {
         Map<String, Object> values = new HashMap<>();
         values.put("v", "short");
         values.put("value", "testing");
@@ -47,8 +48,8 @@ public class VirtualBeanTest {
         assertThat(service.toString(), is("{getV=short, getValue=testing, getInt=1}"));
         assertThat(service, sameInstance(service));
         assertThat(service, not(sameInstance(service2)));
-        assertThat(service2.equals(null), is(false));
-        assertThat(service.equals(service), is(true));
+        assertThat(service2, is(notNullValue()));
+        assertThat(service.equals(service2), is(true));
         assertThat(service, is(service2));
         assertThat(service.hashCode(), is(service2.hashCode()));
         assertThat(service2, not(is(nullValue())));
