@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
-
-import static java.lang.Character.toUpperCase;
-import static java.lang.String.format;
-import static java.util.Optional.ofNullable;
+package net.jmob.guice.conf.core.internal.virtual;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -27,6 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import static java.lang.Character.toUpperCase;
+import static java.lang.String.format;
+import static java.util.Optional.ofNullable;
 
 final class VirtualBean implements InvocationHandler {
 

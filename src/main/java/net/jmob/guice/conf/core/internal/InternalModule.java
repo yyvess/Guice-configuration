@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.samples.advenced.service;
+package net.jmob.guice.conf.core.internal;
 
-import net.jmob.guice.conf.core.internal.Typed;
-import org.hibernate.validator.constraints.Length;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
 
-public interface TypedEntry {
+public class InternalModule extends AbstractModule {
 
-    @NotNull
-    @Length(min = 5)
-    String getValue();
+    private final File from;
 
-    Map<String, String> getAMap();
+    public InternalModule(File fromPath) {
+        this.from = fromPath;
+    }
 
-    List<String> getAList();
+    @Override
+    protected void configure() {
+    }
 
-    SubType getSubType();
-
-    @Typed(SubType.class)
-    Map<String, SubType> getTypedMap();
+    @Provides
+    public ConfigFactory configFactory() {
+        return new ConfigFactory(from);
+    }
 }

@@ -3,6 +3,7 @@ Typesafe config
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
 [![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
+[![Coverage Status](https://coveralls.io/repos/github/yyvess/gconf/badge.svg)](https://coveralls.io/github/yyvess/gconf)
 
 Guice configuration
 ======
@@ -106,6 +107,21 @@ And inject it on a Service
         }
     }
 ```
+
+By default configuration files are loaded of classpath
+A directory can be specified to load configuration outside of classpath
+
+```java  
+    public class GuiceModule extends AbstractModule {
+        @Override
+        protected void configure() {
+            install(new ConfigurationModule()
+                .fromPath(new File("/etc")));
+            requestInjection(Service.class);
+        }
+    }
+```
+
 
 More examples on src/test
 

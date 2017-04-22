@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
-
-import javax.validation.constraints.NotNull;
+package net.jmob.guice.conf.core.internal.virtual;
 
 import org.hibernate.validator.constraints.Length;
 import org.junit.Test;
+
+import javax.validation.constraints.NotNull;
 
 public class BeanValidatorTest {
 

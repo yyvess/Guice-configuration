@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl;
+package net.jmob.guice.conf.core.internal;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
