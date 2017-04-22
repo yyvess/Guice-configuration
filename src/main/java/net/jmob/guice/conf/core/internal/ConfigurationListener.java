@@ -14,25 +14,34 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl;
+package net.jmob.guice.conf.core.internal;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.impl.injector.InjectorBuilder;
+import net.jmob.guice.conf.core.internal.injector.InjectorBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class ConfigurationListener implements TypeListener {
+
+    private final InjectorBuilder injectorBuilder;
+
+    @Inject
+    public ConfigurationListener(InjectorBuilder injectorBuilder) {
+        this.injectorBuilder = injectorBuilder;
+    }
 
     @Override
     public <T> void hear(TypeLiteral<T> typeLiteral, TypeEncounter<T> typeEncounter) {
         getClasses(typeLiteral.getRawType(), new ArrayList<>()).stream()
                 .filter(c -> c.isAnnotationPresent(BindConfig.class))
-                .map(InjectorBuilder::new)
-                .forEach(bd -> bd.build()
+                .forEach(c -> injectorBuilder.build(c)
                         .forEach(typeEncounter::register));
     }
 

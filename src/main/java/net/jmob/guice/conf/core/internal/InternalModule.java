@@ -13,35 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core;
+
+package net.jmob.guice.conf.core.internal;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import net.jmob.guice.conf.core.internal.ConfigurationListener;
-import net.jmob.guice.conf.core.internal.InternalModule;
+import com.google.inject.Provides;
 
 import java.io.File;
 
-import static com.google.inject.matcher.Matchers.any;
+public class InternalModule extends AbstractModule {
 
-public class ConfigurationModule extends AbstractModule {
+    private final File from;
 
-    public ConfigurationModule() {
-    }
-
-    @Deprecated
-    public static ConfigurationModule create() {
-        return new ConfigurationModule();
-    }
-
-    protected File from() {
-        return null;
+    public InternalModule(File fromPath) {
+        this.from = fromPath;
     }
 
     @Override
     protected void configure() {
-        Injector injector = Guice.createInjector(new InternalModule(from()));
-        bindListener(any(), injector.getInstance(ConfigurationListener.class));
+    }
+
+    @Provides
+    public ConfigFactory configFactory() {
+        return new ConfigFactory(from);
     }
 }

@@ -15,22 +15,20 @@
  */
 package net.jmob.guice.conf.core.samples.basic;
 
-import static com.google.inject.Guice.createInjector;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
+import com.google.inject.AbstractModule;
+import net.jmob.guice.conf.core.BindConfig;
+import net.jmob.guice.conf.core.ConfigurationModule;
+import net.jmob.guice.conf.core.InjectConfig;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.inject.AbstractModule;
-
-import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.ConfigurationModule;
-import net.jmob.guice.conf.core.InjectConfig;
+import static com.google.inject.Guice.createInjector;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_01")
 public class ConfigFromConf {

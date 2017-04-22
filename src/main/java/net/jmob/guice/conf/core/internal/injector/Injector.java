@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core.impl.injector;
+package net.jmob.guice.conf.core.internal.injector;
 
 import com.google.inject.MembersInjector;
-import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
+import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
 
 import java.lang.reflect.Field;
 

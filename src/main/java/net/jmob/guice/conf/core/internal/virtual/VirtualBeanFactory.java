@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
+package net.jmob.guice.conf.core.internal.virtual;
 
-import static java.lang.String.format;
-import static java.lang.Thread.currentThread;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toMap;
+import com.google.inject.Singleton;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigValue;
+import net.jmob.guice.conf.core.internal.Typed;
 
+import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -35,11 +32,16 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigValue;
+import static java.lang.String.format;
+import static java.lang.Thread.currentThread;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toMap;
 
-import net.jmob.guice.conf.core.impl.Typed;
-
+@Singleton
 public class VirtualBeanFactory {
 
     private static final String GET_METHOD_PATTERN = VirtualBean.GET_PREFIX + ".+";
@@ -47,13 +49,18 @@ public class VirtualBeanFactory {
     private static final List<Class> SUPPORTED_TYPES
             = asList(int.class, Integer.class, double.class, Double.class, String.class, Map.class, List.class);
 
-    private final BeanValidator beanValidator = new BeanValidator();
+    private final BeanValidator beanValidator;
 
     private Class<?> type;
     private boolean optionalType;
     private Config config;
     private String path;
     private Field field;
+
+    @Inject
+    public VirtualBeanFactory(BeanValidator beanValidator) {
+        this.beanValidator = beanValidator;
+    }
 
 
     public VirtualBeanFactory withConfig(Config config) {
