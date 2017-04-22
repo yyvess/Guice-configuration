@@ -16,26 +16,24 @@
 
 package net.jmob.guice.conf.core.samples.advenced;
 
-import static com.google.inject.name.Names.named;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import javax.inject.Named;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
-
 import net.jmob.guice.conf.core.ConfigurationModule;
 import net.jmob.guice.conf.core.samples.advenced.service.Service;
 import net.jmob.guice.conf.core.samples.advenced.service.ServiceConf;
 import net.jmob.guice.conf.core.samples.advenced.service.ServiceJson;
 import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.inject.Named;
+
+import static com.google.inject.name.Names.named;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 public class ProgrammaticallyBinding {
 

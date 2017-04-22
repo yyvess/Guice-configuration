@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core.impl.injector;
+package net.jmob.guice.conf.core.internal.injector;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-
+import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import net.jmob.guice.conf.core.impl.virtual.VirtualBeanFactory;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 public class InjectorTest {
 

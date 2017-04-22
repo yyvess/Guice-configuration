@@ -16,14 +16,12 @@
 
 package net.jmob.guice.conf.core.samples.advenced.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.NotNull;
-
+import net.jmob.guice.conf.core.internal.Typed;
 import org.hibernate.validator.constraints.Length;
 
-import net.jmob.guice.conf.core.impl.Typed;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 public interface TypedEntry {
 

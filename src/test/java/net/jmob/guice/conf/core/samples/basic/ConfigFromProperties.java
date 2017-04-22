@@ -16,19 +16,17 @@
 
 package net.jmob.guice.conf.core.samples.basic;
 
+import com.google.inject.AbstractModule;
+import net.jmob.guice.conf.core.BindConfig;
+import net.jmob.guice.conf.core.ConfigurationModule;
+import net.jmob.guice.conf.core.InjectConfig;
+import org.junit.Before;
+import org.junit.Test;
+
 import static com.google.inject.Guice.createInjector;
 import static net.jmob.guice.conf.core.Syntax.PROPERTIES;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.inject.AbstractModule;
-
-import net.jmob.guice.conf.core.BindConfig;
-import net.jmob.guice.conf.core.ConfigurationModule;
-import net.jmob.guice.conf.core.InjectConfig;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/basic", syntax = PROPERTIES)
 public class ConfigFromProperties {

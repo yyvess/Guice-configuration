@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.jmob.guice.conf.core.impl.virtual;
+package net.jmob.guice.conf.core.internal.virtual;
 
 import org.junit.Test;
 

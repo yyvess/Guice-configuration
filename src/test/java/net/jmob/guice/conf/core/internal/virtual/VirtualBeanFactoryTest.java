@@ -13,7 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.jmob.guice.conf.core.impl.virtual;
+package net.jmob.guice.conf.core.internal.virtual;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigObject;
+import com.typesafe.config.ConfigValue;
+import net.jmob.guice.conf.core.internal.Typed;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 import static com.google.common.collect.ImmutableMap.of;
 import static org.hamcrest.core.Is.is;
@@ -21,26 +35,6 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
-
-import java.lang.reflect.Field;
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigObject;
-import com.typesafe.config.ConfigValue;
-
-import net.jmob.guice.conf.core.impl.Typed;
 
 public class VirtualBeanFactoryTest {
 
@@ -54,6 +48,8 @@ public class VirtualBeanFactoryTest {
     @Mock
     private ConfigValue configValue;
 
+    private BeanValidator beanValidator = new BeanValidator();
+
     private Integer field;
 
     private InterfaceTypedForTest interfaceField;
@@ -66,7 +62,7 @@ public class VirtualBeanFactoryTest {
         when(config.getAnyRef("test")).thenReturn(111);
 
         Field field = this.getClass().getDeclaredField("field");
-        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory()
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withField(field)
                 .withPath("test")
@@ -81,7 +77,7 @@ public class VirtualBeanFactoryTest {
 
     @Test
     public void optional() throws NoSuchFieldException {
-        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory()
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withField(this.getClass().getDeclaredField("optional"))
                 .withPath("optional")
@@ -102,7 +98,7 @@ public class VirtualBeanFactoryTest {
         when(configObject.entrySet()).thenReturn(new HashSet<>(Collections.singleton(new
                 AbstractMap.SimpleEntry<>("integer", configValue))));
 
-        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory()
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withField(this.getClass().getDeclaredField("field"))
                 .withPath("test")
@@ -125,7 +121,7 @@ public class VirtualBeanFactoryTest {
 
         when(config.getConfig("test")).thenReturn(ConfigFactory.parseMap(rootMap));
 
-        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory()
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withField(this.getClass().getDeclaredField("interfaceField"))
                 .withPath("test")
@@ -141,7 +137,7 @@ public class VirtualBeanFactoryTest {
 
     @Test(expected = RuntimeException.class)
     public void typeNotSupported() throws NoSuchFieldException {
-        new VirtualBeanFactory()
+        new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test")
                 .withType(Float.class)
@@ -150,7 +146,7 @@ public class VirtualBeanFactoryTest {
 
     @Test
     public void missingPath() throws NoSuchFieldException {
-        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory()
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test/test")
                 .withType(InterfaceForTest.class);

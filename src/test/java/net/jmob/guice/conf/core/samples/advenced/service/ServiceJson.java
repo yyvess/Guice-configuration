@@ -17,10 +17,10 @@
 package net.jmob.guice.conf.core.samples.advenced.service;
 
 
-import static net.jmob.guice.conf.core.Syntax.JSON;
-
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.InjectConfig;
+
+import static net.jmob.guice.conf.core.Syntax.JSON;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", syntax = JSON)
 public class ServiceJson implements Service {
