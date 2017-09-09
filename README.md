@@ -3,7 +3,6 @@ Typesafe config
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
 [![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
-[![Coverage Status](https://coveralls.io/repos/github/yyvess/gconf/badge.svg)](https://coveralls.io/github/yyvess/gconf)
 
 Guice configuration
 ======
