@@ -161,6 +161,7 @@ public class VirtualBeanFactory {
 
     private Set<Entry<String, ConfigValue>> getRawProperties() {
         return ofNullable(config.getConfig(path))
+                .map(Config::resolve)
                 .map(c -> c.root().entrySet())
                 .orElse(emptySet());
     }
