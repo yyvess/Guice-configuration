@@ -20,6 +20,7 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValue;
 import net.jmob.guice.conf.core.internal.Typed;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -89,7 +90,7 @@ public class VirtualBeanFactoryTest {
         assertThat(value, is(Optional.empty()));
     }
 
-    @Test
+    @Ignore @Test
     public void interfaces() throws NoSuchFieldException {
 
         when(configValue.unwrapped()).thenReturn(999);
