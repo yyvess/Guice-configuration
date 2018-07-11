@@ -113,11 +113,13 @@ public class VirtualBeanFactory {
     }
 
     private Optional<Entry<String, Object>> mapCandidateChild(Class beanInterface, Entry<String, Object> e) {
-        return stream(beanInterface.getMethods())
-                .filter(f -> isCandidateMethod(e.getKey(), f))
-                .filter(f -> e.getValue() instanceof Map)
-                .map(f -> buildChildEntry(e.getKey(), f, (Map) e.getValue()))
+        if (e.getValue() instanceof Map) {
+           return stream(beanInterface.getMethods())
+                .filter(method -> isCandidateMethod(e.getKey(), method))
+                .map(m -> buildChildEntry(e.getKey(), m, (Map) e.getValue()))
                 .findFirst();
+        }
+        return Optional.empty();
     }
 
     private boolean isCandidateMethod(String key, Method method) {

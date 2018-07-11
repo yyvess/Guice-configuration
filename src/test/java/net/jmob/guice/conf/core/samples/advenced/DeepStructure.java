@@ -38,7 +38,7 @@ public class DeepStructure {
     @InjectConfig(value = "port")
     private int port;
 
-    @InjectConfig("complexType")
+    @InjectConfig("complexEntries")
     private TypedEntry config;
 
     @Before

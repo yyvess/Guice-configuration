@@ -43,7 +43,7 @@ public class ResolvedConfig {
     @Test
     public void test() {
         assertThat(myConfig, is("Hello, World!"));
-        assertThat(missingConfig, is("and love!"));
+        assertThat(missingConfig, is(" and love!"));
     }
 
     public static class GuiceModule extends AbstractModule {
