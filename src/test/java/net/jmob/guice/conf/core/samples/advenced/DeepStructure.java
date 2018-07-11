@@ -80,7 +80,7 @@ public class DeepStructure {
 
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(test);
         }
     }

@@ -51,7 +51,7 @@ public class ConfigFromConf {
     @InjectConfig
     private Optional<Integer> emptyInteger;
 
-    @InjectConfig("complexType")
+    @InjectConfig("complexEntries")
     private ServiceConfiguration config;
 
     @Before
@@ -90,7 +90,7 @@ public class ConfigFromConf {
 
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(test);
         }
     }

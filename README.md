@@ -1,5 +1,4 @@
-Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of 
-Typesafe config
+Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of Typesafe config
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
 [![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
@@ -11,6 +10,7 @@ Guice configuration
 
 - Guice injection 
 - JSON, HOCON and Properties formats
+- Substitutions ${foo.bar}
 - Validation
 
 ## Binary Releases
@@ -43,12 +43,12 @@ Link for direct download if you don't use a dependency manager:
  
 ## Quickstart
 
-File `app.json` :
+A configuration file `app.json` :
 
 ```javascript
 {
   "port": 8080,
-  "complexType": {
+  "complexEntries": {
     "hostname": "www.github.com",
     "aMap": {
       "key1": "value1",
@@ -62,10 +62,10 @@ File `app.json` :
 }
 ```
 
-Use a interface to inject structured data
+An interface where to inject structured data
 
 ```java  
-   public interface ServiceConfiguration {
+   public interface MyServiceConfiguration {
 
       @Length(min = 5)
       String getHostname();
@@ -76,7 +76,7 @@ Use a interface to inject structured data
    }
 ```
 
-And inject it on a Service
+A service where configuration should be inject
 ```java  
     @BindConfig(value = "app", syntax = JSON)
     public class Service {
@@ -84,11 +84,11 @@ And inject it on a Service
         @InjectConfig
         private Optional<Integer> port;
 
-        @InjectConfig("complexType")
-        private ServiceConfiguration config;
+        @InjectConfig("complexEntries")
+        private MyServiceConfiguration config;
 
         public int getPort() {
-            return port;
+            return port.orElse(0);
         }
 
         public ServiceConfiguration getConfig() {
@@ -101,13 +101,14 @@ And inject it on a Service
     public class GuiceModule extends AbstractModule {
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(Service.class);
         }
     }
 ```
 
-By default configuration files are loaded of classpath
+Configuration files are loaded of classpath by default
+
 A directory can be specified to load configuration outside of classpath
 
 ```java  
@@ -122,7 +123,22 @@ A directory can be specified to load configuration outside of classpath
 ```
 
 
-More examples on src/test
+Variables on your configuration file can be substitued with environment variables.
+
+Substitution should be active with the option 'resolve'
+
+```java  
+@BindConfig(value = "config, resolve = true)
+```
+
+```javascript
+{
+  myconfig: ${my.environement.property}
+}
+```
+
+
+Please find more examples on src/test/samples
 
 ## Supported types
 

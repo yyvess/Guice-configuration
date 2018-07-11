@@ -89,7 +89,7 @@ public class ProgrammaticallyBinding {
 
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(programmaticallyBinding);
             bind(Service.class).annotatedWith(named("Conf")).to(ServiceConf.class);
             bind(Service.class).annotatedWith(named("Json")).to(ServiceJson.class);

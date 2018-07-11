@@ -43,7 +43,7 @@ final class VirtualBean implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         String methodName = method.getName();
         int nbArgs = nbArgs(args);
         if (methodName.startsWith(GET_PREFIX) && nbArgs == 0) {
