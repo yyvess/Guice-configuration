@@ -62,7 +62,7 @@ A configuration file `app.json` :
 }
 ```
 
-An interface where to inject structured data
+An interface where inject your structured configuration
 
 ```java  
    public interface MyServiceConfiguration {
