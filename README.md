@@ -1,9 +1,9 @@
-Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of 
-Typesafe config
+Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of Typesafe config
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
-[![Build Status](https://travis-ci.org/yyvess/gconf.svg?branch=master)](https://travis-ci.org/yyvess/gconf)
-[![Coverage Status](https://coveralls.io/repos/github/yyvess/gconf/badge.svg)](https://coveralls.io/github/yyvess/gconf)
+[![Build Status](https://travis-ci.org/yyvess/Guice-configuration.svg?branch=master)](https://travis-ci.org/yyvess/Guice-configuration)
+[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)                     
+[![Coverage Status](https://coveralls.io/repos/github/yyvess/Guice-configuration/badge.svg?branch=master)](https://coveralls.io/github/yyvess/Guice-configuration?branch=master)
 
 Guice configuration
 ======
@@ -12,6 +12,7 @@ Guice configuration
 
 - Guice injection 
 - JSON, HOCON and Properties formats
+- Substitutions ${foo.bar}
 - Validation
 
 ## Binary Releases
@@ -21,7 +22,7 @@ You can find published releases on Maven Central.
 		<dependency>
 			<groupId>net.jmob</groupId>
 			<artifactId>guice.conf</artifactId>
-			<version>1.2.0</version>
+			<version>1.3.0</version>
 		</dependency>
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
@@ -44,12 +45,12 @@ Link for direct download if you don't use a dependency manager:
  
 ## Quickstart
 
-File `app.json` :
+A configuration file `app.json` :
 
 ```javascript
 {
   "port": 8080,
-  "complexType": {
+  "complexEntries": {
     "hostname": "www.github.com",
     "aMap": {
       "key1": "value1",
@@ -63,10 +64,10 @@ File `app.json` :
 }
 ```
 
-Use a interface to inject structured data
+An interface where inject your structured configuration
 
 ```java  
-   public interface ServiceConfiguration {
+   public interface MyServiceConfiguration {
 
       @Length(min = 5)
       String getHostname();
@@ -77,7 +78,7 @@ Use a interface to inject structured data
    }
 ```
 
-And inject it on a Service
+A service where configuration should be inject
 ```java  
     @BindConfig(value = "app", syntax = JSON)
     public class Service {
@@ -85,11 +86,11 @@ And inject it on a Service
         @InjectConfig
         private Optional<Integer> port;
 
-        @InjectConfig("complexType")
-        private ServiceConfiguration config;
+        @InjectConfig("complexEntries")
+        private MyServiceConfiguration config;
 
         public int getPort() {
-            return port;
+            return port.orElse(0);
         }
 
         public ServiceConfiguration getConfig() {
@@ -102,13 +103,14 @@ And inject it on a Service
     public class GuiceModule extends AbstractModule {
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(Service.class);
         }
     }
 ```
 
-By default configuration files are loaded of classpath
+Configuration files are loaded of classpath by default
+
 A directory can be specified to load configuration outside of classpath
 
 ```java  
@@ -123,7 +125,22 @@ A directory can be specified to load configuration outside of classpath
 ```
 
 
-More examples on src/test
+Variables on your configuration file can be substitued with environment variables.
+
+Substitution should be active with the option 'resolve'
+
+```java  
+@BindConfig(value = "config, resolve = true)
+```
+
+```javascript
+{
+  myconfig: ${my.environement.property}
+}
+```
+
+
+Please find more examples on src/test/samples
 
 ## Supported types
 
