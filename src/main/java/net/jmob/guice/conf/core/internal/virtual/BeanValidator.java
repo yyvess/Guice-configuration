@@ -17,6 +17,7 @@
 package net.jmob.guice.conf.core.internal.virtual;
 
 import com.google.inject.Singleton;
+import net.jmob.guice.conf.core.internal.ConfigurationException;
 import org.slf4j.Logger;
 
 import javax.validation.ConstraintViolation;
@@ -50,7 +51,7 @@ public class BeanValidator {
         if (factory != null) {
             Set<ConstraintViolation<T>> constraintsViolation = factory.getValidator().validate(bean);
             if (!constraintsViolation.isEmpty()) {
-                throw new RuntimeException(
+                throw new ConfigurationException(
                         format("Constraint violation on %s : %s"
                                 , beanInterface
                                 , constraintsViolation.iterator().next().getMessage()));

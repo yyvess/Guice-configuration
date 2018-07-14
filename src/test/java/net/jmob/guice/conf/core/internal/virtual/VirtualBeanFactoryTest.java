@@ -136,7 +136,7 @@ public class VirtualBeanFactoryTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void typeNotSupported() throws NoSuchFieldException {
+    public void typeNotSupported() {
         new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test")
@@ -145,7 +145,7 @@ public class VirtualBeanFactoryTest {
     }
 
     @Test
-    public void missingPath() throws NoSuchFieldException {
+    public void missingPath() {
         VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test/test")

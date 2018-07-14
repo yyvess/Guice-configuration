@@ -30,7 +30,10 @@ import static org.junit.Assert.assertThat;
 public class ResolvedConfig {
 
     @InjectConfig
-    private String myconfig;
+    private String myConfig;
+
+    @InjectConfig
+    private String missingConfig;
 
     @Before
     public void init() {
@@ -39,7 +42,8 @@ public class ResolvedConfig {
 
     @Test
     public void test() {
-        assertThat(myconfig, is("Hello, World!"));
+        assertThat(myConfig, is("Hello, World!"));
+        assertThat(missingConfig, is(" and love!"));
     }
 
     public static class GuiceModule extends AbstractModule {
@@ -52,7 +56,7 @@ public class ResolvedConfig {
 
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(test);
         }
     }

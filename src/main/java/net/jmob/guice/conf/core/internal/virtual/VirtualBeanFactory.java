@@ -19,6 +19,7 @@ package net.jmob.guice.conf.core.internal.virtual;
 import com.google.inject.Singleton;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValue;
+import net.jmob.guice.conf.core.internal.ConfigurationException;
 import net.jmob.guice.conf.core.internal.Typed;
 
 import javax.inject.Inject;
@@ -93,7 +94,7 @@ public class VirtualBeanFactory {
         } else if (optionalType || SUPPORTED_TYPES.contains(type)) {
             return config.getAnyRef(path);
         } else if (!type.isInterface()) {
-            throw new RuntimeException(format("Type not supported, must be a interface : %s", this.type));
+            throw new ConfigurationException(format("Type not supported, must be a interface : %s", this.type));
         }
         return newProxyInstance(type, mapProperties(type, getProperties()));
     }
@@ -113,11 +114,13 @@ public class VirtualBeanFactory {
     }
 
     private Optional<Entry<String, Object>> mapCandidateChild(Class beanInterface, Entry<String, Object> e) {
-        return stream(beanInterface.getMethods())
-                .filter(f -> isCandidateMethod(e.getKey(), f))
-                .filter(f -> e.getValue() instanceof Map)
-                .map(f -> buildChildEntry(e.getKey(), f, (Map) e.getValue()))
+        if (e.getValue() instanceof Map) {
+           return stream(beanInterface.getMethods())
+                .filter(method -> isCandidateMethod(e.getKey(), method))
+                .map(method -> buildChildEntry(e.getKey(), method, (Map) e.getValue()))
                 .findFirst();
+        }
+        return Optional.empty();
     }
 
     private boolean isCandidateMethod(String key, Method method) {

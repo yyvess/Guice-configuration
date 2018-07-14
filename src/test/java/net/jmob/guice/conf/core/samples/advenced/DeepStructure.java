@@ -38,7 +38,7 @@ public class DeepStructure {
     @InjectConfig(value = "port")
     private int port;
 
-    @InjectConfig("complexType")
+    @InjectConfig("complexEntries")
     private TypedEntry config;
 
     @Before
@@ -80,7 +80,7 @@ public class DeepStructure {
 
         @Override
         protected void configure() {
-            install(ConfigurationModule.create());
+            install(new ConfigurationModule());
             requestInjection(test);
         }
     }

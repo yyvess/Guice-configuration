@@ -25,7 +25,7 @@ public class ServiceConf implements Service {
     @InjectConfig
     private int port;
 
-    @InjectConfig("complexType")
+    @InjectConfig("complexEntries")
     private TypedEntry config;
 
     @Override

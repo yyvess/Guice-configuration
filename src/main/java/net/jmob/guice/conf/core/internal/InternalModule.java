@@ -29,10 +29,6 @@ public class InternalModule extends AbstractModule {
         this.from = fromPath;
     }
 
-    @Override
-    protected void configure() {
-    }
-
     @Provides
     public ConfigFactory configFactory() {
         return new ConfigFactory(from);

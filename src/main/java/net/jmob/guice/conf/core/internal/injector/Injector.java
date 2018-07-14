@@ -16,6 +16,7 @@
 package net.jmob.guice.conf.core.internal.injector;
 
 import com.google.inject.MembersInjector;
+import net.jmob.guice.conf.core.internal.ConfigurationException;
 import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
 
 import java.lang.reflect.Field;
@@ -36,7 +37,7 @@ public class Injector<T> implements MembersInjector<T> {
         try {
             field.set(bean, value);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new ConfigurationException(e);
         }
     }
 }

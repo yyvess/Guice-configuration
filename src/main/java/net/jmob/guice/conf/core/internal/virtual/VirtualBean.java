@@ -16,6 +16,8 @@
 
 package net.jmob.guice.conf.core.internal.virtual;
 
+import net.jmob.guice.conf.core.internal.ConfigurationException;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -43,7 +45,7 @@ final class VirtualBean implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         String methodName = method.getName();
         int nbArgs = nbArgs(args);
         if (methodName.startsWith(GET_PREFIX) && nbArgs == 0) {
@@ -55,7 +57,7 @@ final class VirtualBean implements InvocationHandler {
         } else if (methodName.equals(EQUALS_METHOD) && nbArgs == 1) {
             return equals(args[0]);
         }
-        throw new RuntimeException(format("Incorrect method name %s:%s", methodName, nbArgs));
+        throw new ConfigurationException(format("Incorrect method name %s:%s", methodName, nbArgs));
     }
 
     private Object magicGet(String methodName, boolean optional) {
