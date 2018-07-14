@@ -116,7 +116,7 @@ public class VirtualBeanFactory {
         if (e.getValue() instanceof Map) {
            return stream(beanInterface.getMethods())
                 .filter(method -> isCandidateMethod(e.getKey(), method))
-                .map(m -> buildChildEntry(e.getKey(), m, (Map) e.getValue()))
+                .map(method -> buildChildEntry(e.getKey(), method, (Map) e.getValue()))
                 .findFirst();
         }
         return Optional.empty();
