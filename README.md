@@ -22,21 +22,21 @@ You can find published releases on Maven Central.
 		<dependency>
 			<groupId>net.jmob</groupId>
 			<artifactId>guice.conf</artifactId>
-			<version>1.3.0</version>
+			<version>1.4.0</version>
 		</dependency>
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
 		
-	    <dependency>
-	      <groupId>org.hibernate</groupId>
-	      <artifactId>hibernate-validator-cdi</artifactId>
-	      <version>5.2.2.Final</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>javax.el</groupId>
-	      <artifactId>javax.el-api</artifactId>
-	      <version>2.2.4</version>
-	    </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-cdi</artifactId>
+            <version>6.0.15.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
 Link for direct download if you don't use a dependency manager:
 

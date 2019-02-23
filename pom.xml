@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.jmob</groupId>
     <artifactId>guice.conf</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <name>Guice Configuration</name>
@@ -35,7 +35,7 @@
         <junit.version>4.12</junit.version>
         <typesafe.version>1.3.3</typesafe.version>
         <logback.version>1.2.3</logback.version>
-        <validation-api.versoin>1.1.0.Final</validation-api.versoin>
+        <validation-api.versoin>2.0.1.Final</validation-api.versoin>
         <mockito.version>2.19.0</mockito.version>
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -80,15 +80,15 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator-cdi</artifactId>
-            <version>5.2.2.Final</version>
+            <version>6.0.15.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>2.2.4</version>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
