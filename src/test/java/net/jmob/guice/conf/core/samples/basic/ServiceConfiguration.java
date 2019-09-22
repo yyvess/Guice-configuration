@@ -25,6 +25,8 @@ public interface ServiceConfiguration {
     @Length(min = 5)
     String getValue();
 
+    boolean getBoolean();
+
     Map<String, String> getAMap();
 
     List<String> getAList();

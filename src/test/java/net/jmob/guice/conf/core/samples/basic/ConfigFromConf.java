@@ -43,6 +43,9 @@ public class ConfigFromConf {
     private Integer aInteger;
 
     @InjectConfig
+    private Boolean aBoolean;
+
+    @InjectConfig
     private List<Integer> aIntList;
 
     @InjectConfig
@@ -67,12 +70,14 @@ public class ConfigFromConf {
         assertThat(aInteger, is(44));
         assertThat(aOptionalInteger, is(Optional.of(423)));
         assertThat(emptyInteger, is(Optional.empty()));
+        assertThat(aBoolean, is(false));
 
         assertThat(aIntList, notNullValue());
         assertThat(aIntList.get(0), is(67));
 
         assertThat(config, notNullValue());
         assertThat(config.getValue(), is("Hello World"));
+        assertThat(config.getBoolean(), is(true));
         assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap().get("key1"), is("value1"));
         assertThat(config.getAMap().get("key2"), is("value2"));

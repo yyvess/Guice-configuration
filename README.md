@@ -22,7 +22,7 @@ You can find published releases on Maven Central.
 		<dependency>
 			<groupId>net.jmob</groupId>
 			<artifactId>guice.conf</artifactId>
-			<version>1.4.0</version>
+			<version>1.4.1</version>
 		</dependency>
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
@@ -144,6 +144,7 @@ Please find more examples on src/test/samples
 
 ## Supported types
 
+- boolean, Boolean
 - String
 - int, Integer, double, Double
 - List<?>, Map<?>, with typed value support

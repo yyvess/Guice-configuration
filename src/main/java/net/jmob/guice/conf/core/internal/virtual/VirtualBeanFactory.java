@@ -48,7 +48,7 @@ public class VirtualBeanFactory {
     private static final String GET_METHOD_PATTERN = VirtualBean.GET_PREFIX + ".+";
     private static final int GET_PREFIX_SIZE = VirtualBean.GET_PREFIX.length();
     private static final List<Class> SUPPORTED_TYPES
-            = asList(int.class, Integer.class, double.class, Double.class, String.class, Map.class, List.class);
+            = asList(boolean.class, Boolean.class, int.class, Integer.class, double.class, Double.class, String.class, Map.class, List.class);
 
     private final BeanValidator beanValidator;
 
@@ -117,7 +117,7 @@ public class VirtualBeanFactory {
         if (e.getValue() instanceof Map) {
            return stream(beanInterface.getMethods())
                 .filter(method -> isCandidateMethod(e.getKey(), method))
-                .map(method -> buildChildEntry(e.getKey(), method, (Map) e.getValue()))
+                .<Map.Entry<String, Object>>map(method -> buildChildEntry(e.getKey(), method, (Map) e.getValue()))
                 .findFirst();
         }
         return Optional.empty();
