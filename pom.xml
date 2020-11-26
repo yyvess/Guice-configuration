@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.jmob</groupId>
     <artifactId>guice.conf</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <prerequisites>
@@ -42,6 +42,7 @@
         <validation-api.versoin>2.0.1.Final</validation-api.versoin>
         <mockito.version>3.6.28</mockito.version>
         <project.scm.id>github</project.scm.id>
+        <gpg.keyname>Yves Galante</gpg.keyname>
     </properties>
 
     <dependencies>
@@ -111,6 +112,26 @@
         </repository>
     </distributionManagement>
     <profiles>
+        <profile>
+            <id>coverage</id>
+            <build>
+                <plugins>
+            	    <plugin>
+       	 	        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.6</version>
+                        <executions>
+                    	    <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+              	                    <goal>prepare-agent</goal>
+               	                </goals>
+                            </execution>
+                        </executions>
+            	    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>gpg</id>
             <build>
@@ -220,19 +241,6 @@
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.3</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

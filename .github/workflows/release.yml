@@ -1,0 +1,41 @@
+
+name: Release
+
+on:
+  workflow_run:
+    workflows: ["Java Build"]
+    branches: [ "master" ]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Maven Central Repository
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+        server-id: sonatype-nexus-releases
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+    - name: Configure GPG Key
+      env:
+         GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      run: |
+        mkdir -p ~/.gnupg/
+        printf "$GPG_SIGNING_KEY" | base64 --decode > ~/.gnupg/private.key
+        gpg --import ~/.gnupg/private.key
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: OleksiyRudenko/gha-git-credentials@v2
+      with:
+        token: GIT_TOKEN
+    - name: Prepare release
+      run: mvn -B -Dmaven.test.skip=true -DtagNameFormat=v@{project.version} -DgenerateReleasePoms=false release:prepare-with-pom
+    - name: Release
+      env:
+        MAVEN_USERNAME: ${{ secrets.NEXUS_USER }}
+        MAVEN_PASSWORD: ${{ secrets.NEXUS_PWD }}
+      run: mvn -B -Dmaven.test.skip=true -Pgpg verify install release:perform
