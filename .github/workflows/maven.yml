@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Build & Analayse
-      run: mvn -Dsonar.host.url=https://sonarcloud.io sonar:sonar jacoco:report 
+      run: mvn -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=yyvess-github -Dsonar.login=${{ secrets.SONAR_TOKEN }} sonar:sonar jacoco:report 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       with:
@@ -33,5 +33,5 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         sonar.organization: yyvess-github
         sonar.host.url: https://sonarcloud.io
-    - name: Build with Maven
+    - name: Package Maven
       run: mvn -B clean package
