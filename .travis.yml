@@ -1,7 +1,0 @@
-language: java
-jdk:
-  - oraclejdk9
-dist: trusty
-after_success:
-    - mvn jacoco:report coveralls:report
-    - mvn sonar:sonar -Dsonar.organization=yyvess-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=3a0f459e8b39939862f71077977ff085d1b94ae6
