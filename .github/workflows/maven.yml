@@ -20,7 +20,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build & Analayse
+    - name: Build Maven
+      run: mvn -B compile
+    - name: Maven Test
+      run: mvn -B test
+    - name: Analayse & publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
