@@ -2,8 +2,8 @@ Guice configuration module, JSON, HOCON & Properties formats supported, build on
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
 [![Build Status](https://travis-ci.org/yyvess/Guice-configuration.svg?branch=master)](https://travis-ci.org/yyvess/Guice-configuration)
-[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)                     
-[![Coverage Status](https://coveralls.io/repos/github/yyvess/Guice-configuration/badge.svg?branch=master)](https://coveralls.io/github/yyvess/Guice-configuration?branch=master)
+
+[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=coverage)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)
 
 Guice configuration
 ======
