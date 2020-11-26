@@ -14,35 +14,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     - name: Build Jacoco
-      run: mvn jacoco:report coveralls:report
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-        fetch-depth: 0
-        args: >
-          -Dsonar.organization=yyvess-github
+      run: mvn org.sonarsource.scanner.maven:sonar jacoco:report
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
+      with:
+         args: >
+          -Dsonar.organization=yyvess-github:  
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         sonar.organization: yyvess-github
         sonar.host.url: https://sonarcloud.io
-  package:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
     - name: Build with Maven
       run: mvn -B clean package
