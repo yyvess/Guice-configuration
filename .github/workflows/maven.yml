@@ -11,6 +11,8 @@ on:
 
 jobs:
   build:
+    env:
+      MAVEN_ARGS: -B -ntp -Prelease -Pcoverage
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,9 +23,9 @@ jobs:
       with:
         java-version: 1.8
     - name: Build Maven
-      run: mvn -B -Pcoverage compile
+      run: mvn ${MAVEN_ARGS} compile
     - name: Maven Test
-      run: mvn -B  -Pcoverage test
+      run: mvn ${MAVEN_ARGS} test
     - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
@@ -32,4 +34,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B -Pcoverage -Dsonar.java.binaries=target/classes -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=yyvess-github jacoco:report sonar:sonar
+      run: mvn ${MAVEN_ARGS} -Dsonar.java.binaries=target/classes -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=yyvess-github -Dmaven.javadoc.skip=true jacoco:report sonar:sonar

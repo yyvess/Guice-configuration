@@ -5,3 +5,4 @@
 /target
 guice.conf.iml
 release.properties
+.flattened-pom.xml
