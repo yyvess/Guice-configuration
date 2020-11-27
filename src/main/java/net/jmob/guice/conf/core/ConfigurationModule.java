@@ -29,11 +29,6 @@ public class ConfigurationModule extends AbstractModule {
 
     private File fromPath;
 
-    @Deprecated
-    public static ConfigurationModule create() {
-        return new ConfigurationModule();
-    }
-
     public ConfigurationModule fromPath(File fromPath) {
         this.fromPath = fromPath;
         return this;
