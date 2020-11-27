@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.jmob</groupId>
     <artifactId>guice.conf</artifactId>
-    <version>1.4.3-SNAPSHOT</version>
+    <version>1.4.3</version>
     <packaging>jar</packaging>
 
     <prerequisites>
@@ -25,7 +25,7 @@
     <scm>
         <connection>scm:git:https://github.com/yyvess/gconf.git</connection>
         <url>https://github.com/yyvess/gconf.git</url>
-        <tag>HEAD</tag>
+        <tag>v1.4.3</tag>
     </scm>
     <developers>
         <developer>
