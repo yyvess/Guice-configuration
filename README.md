@@ -40,7 +40,7 @@ Optionally, to active validation, you must import a validator like Hibernate val
 
 Link for direct download if you don't use a dependency manager:
 
- - http://central.maven.org/maven2/net/jmob/guice.conf/
+ - https://mvnrepository.com/artifact/net.jmob/guice.conf
  
  
 ## Quickstart
