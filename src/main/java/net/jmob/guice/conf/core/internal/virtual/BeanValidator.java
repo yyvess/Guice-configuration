@@ -47,7 +47,7 @@ public class BeanValidator {
         }
     }
 
-    public <T> T valid(T bean, Class beanInterface) {
+    public <T> T valid(T bean, Class<?> beanInterface) {
         if (factory != null) {
             Set<ConstraintViolation<T>> constraintsViolation = factory.getValidator().validate(bean);
             if (!constraintsViolation.isEmpty()) {

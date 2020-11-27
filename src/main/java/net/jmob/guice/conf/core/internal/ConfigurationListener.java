@@ -45,7 +45,7 @@ public class ConfigurationListener implements TypeListener {
                         .forEach(typeEncounter::register));
     }
 
-    private List<Class> getClasses(Class c, ArrayList<Class> classes) {
+    private List<Class<?>> getClasses(Class<?> c, ArrayList<Class<?>> classes) {
         if (c == null) {
             return classes;
         }

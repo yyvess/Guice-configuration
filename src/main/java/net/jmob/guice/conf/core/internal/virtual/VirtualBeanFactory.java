@@ -47,7 +47,7 @@ public class VirtualBeanFactory {
 
     private static final String GET_METHOD_PATTERN = VirtualBean.GET_PREFIX + ".+";
     private static final int GET_PREFIX_SIZE = VirtualBean.GET_PREFIX.length();
-    private static final List<Class> SUPPORTED_TYPES
+    private static final List<Class<?>> SUPPORTED_TYPES
             = asList(boolean.class, Boolean.class, int.class, Integer.class, double.class, Double.class, String.class, Map.class, List.class);
 
     private final BeanValidator beanValidator;
@@ -107,13 +107,13 @@ public class VirtualBeanFactory {
         return beanValidator.valid(bean, beanInterface);
     }
 
-    private Map<String, Object> mapProperties(Class beanInterface, Map<String, Object> values) {
+    private Map<String, Object> mapProperties(Class<?> beanInterface, Map<String, Object> values) {
         return values.entrySet().stream()
                 .map(e -> mapCandidateChild(beanInterface, e).orElse(e))
                 .collect(toMap(Entry::getKey, Entry::getValue));
     }
 
-    private Optional<Entry<String, Object>> mapCandidateChild(Class beanInterface, Entry<String, Object> e) {
+    private Optional<Entry<String, Object>> mapCandidateChild(Class<?> beanInterface, Entry<String, Object> e) {
         if (e.getValue() instanceof Map) {
            return stream(beanInterface.getMethods())
                 .filter(method -> isCandidateMethod(e.getKey(), method))
@@ -143,7 +143,7 @@ public class VirtualBeanFactory {
         return new SimpleImmutableEntry(key, newProxyInstance(getType(m), values));
     }
 
-    private Class getType(Method m) {
+    private Class<?> getType(Method m) {
         return isAnnotationTypedPresent(m) ? m.getAnnotationsByType(Typed.class)[0].value() : m.getReturnType();
     }
 
