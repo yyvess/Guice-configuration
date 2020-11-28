@@ -30,5 +30,6 @@ public @interface BindConfig {
 
     boolean resolve() default false;
 
+
     Syntax syntax() default Syntax.CONF;
 }
