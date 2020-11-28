@@ -1,7 +1,6 @@
 Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of Typesafe config
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
-[![Build Status](https://travis-ci.org/yyvess/Guice-configuration.svg?branch=master)](https://travis-ci.org/yyvess/Guice-configuration)
 
 [![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=coverage)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)
 
