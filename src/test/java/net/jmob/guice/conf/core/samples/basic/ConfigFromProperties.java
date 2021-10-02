@@ -20,13 +20,13 @@ import com.google.inject.AbstractModule;
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.ConfigurationModule;
 import net.jmob.guice.conf.core.InjectConfig;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.inject.Guice.createInjector;
 import static net.jmob.guice.conf.core.Syntax.PROPERTIES;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/basic", syntax = PROPERTIES)
 public class ConfigFromProperties {
@@ -34,7 +34,7 @@ public class ConfigFromProperties {
     @InjectConfig(value = "value")
     private String value;
 
-    @Before
+    @BeforeEach
     public void init() {
         createInjector(new GuiceModule(this));
     }

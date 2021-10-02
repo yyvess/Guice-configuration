@@ -20,26 +20,25 @@ import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValue;
 import net.jmob.guice.conf.core.internal.Typed;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 import static com.google.common.collect.ImmutableMap.of;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class VirtualBeanFactoryTest {
-
-    @Rule
-    public MockitoRule mockito = MockitoJUnit.rule();
+@ExtendWith(MockitoExtension.class)
+class VirtualBeanFactoryTest {
 
     @Mock
     private Config config;
@@ -57,7 +56,7 @@ public class VirtualBeanFactoryTest {
     private Optional<Integer> optional;
 
     @Test
-    public void nominal() throws NoSuchFieldException {
+    void nominal() throws NoSuchFieldException {
 
         when(config.getAnyRef("test")).thenReturn(111);
 
@@ -76,7 +75,7 @@ public class VirtualBeanFactoryTest {
     }
 
     @Test
-    public void optional() throws NoSuchFieldException {
+    void optional() throws NoSuchFieldException {
         VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withField(this.getClass().getDeclaredField("optional"))
@@ -90,7 +89,7 @@ public class VirtualBeanFactoryTest {
     }
 
     @Test
-    public void interfaces() throws NoSuchFieldException {
+    void interfaces() throws NoSuchFieldException {
 
         when(configValue.unwrapped()).thenReturn(999);
         when(config.getConfig("test")).thenReturn(config);
@@ -111,7 +110,7 @@ public class VirtualBeanFactoryTest {
     }
 
     @Test
-    public void typed() throws NoSuchFieldException {
+    void typed() throws NoSuchFieldException {
 
         Map map0 = of("integer", 999);
         Map map1 = of("integer", 888);
@@ -135,17 +134,17 @@ public class VirtualBeanFactoryTest {
         assertThat(((InterfaceTypedForTest) value).getTypedMap().get("key").getInteger(), is(999));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void typeNotSupported() {
-        new VirtualBeanFactory(beanValidator)
+    @Test
+    void typeNotSupported() {
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test")
-                .withType(Float.class)
-                .buildValue();
+                .withType(Float.class);
+        assertThrows(RuntimeException.class, () -> virtualBeanFactory.buildValue());
     }
 
     @Test
-    public void missingPath() {
+    void missingPath() {
         VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator)
                 .withConfig(config)
                 .withPath("test/test")
@@ -157,11 +156,11 @@ public class VirtualBeanFactoryTest {
         assertThat(((InterfaceForTest) value).getInteger(), is(nullValue()));
     }
 
-    public interface InterfaceForTest {
+    interface InterfaceForTest {
         Integer getInteger();
     }
 
-    public interface InterfaceTypedForTest {
+    interface InterfaceTypedForTest {
 
         InterfaceForTest getInterfaceForTest();
 

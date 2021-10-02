@@ -17,38 +17,49 @@
 package net.jmob.guice.conf.core.internal.virtual;
 
 import org.hibernate.validator.constraints.Length;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.validation.constraints.NotNull;
 
-public class BeanValidatorTest {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class BeanValidatorTest {
 
     @Test
-    public void valid() {
-        new BeanValidator().valid(new Bean().withValue("123456"), Bean.class);
+    void valid() {
+        BeanValidator beanValidator = new BeanValidator();
+        Bean bean = new Bean().withValue("123456");
+        assertThat(beanValidator.valid(bean, Bean.class), is(notNullValue()));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void validationFailNull() {
-        new BeanValidator().valid(new Bean(), Bean.class);
+    @Test
+    void validationFailNull() {
+        BeanValidator beanValidator = new BeanValidator();
+        Bean bean = new Bean();
+        assertThrows(RuntimeException.class, () -> beanValidator.valid(bean, Bean.class));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void validationFailInvalidLength() {
-        new BeanValidator().valid(new Bean().withValue("123"), Bean.class);
+    @Test
+    void validationFailInvalidLength() {
+        BeanValidator beanValidator = new BeanValidator();
+        Bean bean = new Bean().withValue("123");
+        assertThrows(RuntimeException.class, () -> beanValidator.valid(bean, Bean.class));
     }
 
-    public static class Bean {
+    static class Bean {
 
         private String value;
 
         @NotNull
         @Length(min = 5)
-        public String getValue() {
+        String getValue() {
             return value;
         }
 
-        public Bean withValue(String value) {
+        Bean withValue(String value) {
             this.value = value;
             return this;
         }

@@ -19,15 +19,15 @@ import com.google.inject.AbstractModule;
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.ConfigurationModule;
 import net.jmob.guice.conf.core.InjectConfig;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.inject.Guice.createInjector;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/resolved", resolve = true)
-public class ResolvedConfig {
+class ResolvedConfig {
 
     @InjectConfig
     private String myConfig;
@@ -35,22 +35,22 @@ public class ResolvedConfig {
     @InjectConfig
     private String missingConfig;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         createInjector(new ResolvedConfig.GuiceModule(this));
     }
 
     @Test
-    public void test() {
+    void test() {
         assertThat(myConfig, is("Hello, World!"));
         assertThat(missingConfig, is(" and love!"));
     }
 
-    public static class GuiceModule extends AbstractModule {
+    static class GuiceModule extends AbstractModule {
 
         private final Object test;
 
-        public GuiceModule(Object test) {
+        GuiceModule(Object test) {
             this.test = test;
         }
 

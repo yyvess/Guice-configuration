@@ -23,31 +23,28 @@ import net.jmob.guice.conf.core.InjectConfig;
 import net.jmob.guice.conf.core.internal.ConfigFactory;
 import net.jmob.guice.conf.core.internal.virtual.BeanValidator;
 import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @BindConfig(value = "rootPath")
-public class InjectorBuilderTest {
-
-    @Rule
-    public MockitoRule mockito = MockitoJUnit.rule();
+@ExtendWith(MockitoExtension.class)
+class InjectorBuilderTest {
 
     @Mock
     private ConfigFactory configFactory;
-
     @Mock
     private Config config;
     @Mock
@@ -60,8 +57,8 @@ public class InjectorBuilderTest {
 
     private InjectorBuilder injectorBuilder;
 
-    @Before
-    public void initializeMock() {
+    @BeforeEach
+    void initializeMock() {
         when(configFactory.parseResources(arg.capture(), any(ConfigParseOptions.class)))
                 .thenReturn(config);
         virtualBeanFactory = new VirtualBeanFactory(beanValidator);
@@ -69,7 +66,7 @@ public class InjectorBuilderTest {
     }
 
     @Test
-    public void bean_without_property() {
+    void bean_without_property() {
         Stream<Injector> build = injectorBuilder.build(NoProperty.class);
 
         verify(config, never()).getConfig(anyString());
@@ -77,7 +74,7 @@ public class InjectorBuilderTest {
     }
 
     @Test
-    public void bean_config_with_properties() {
+    void bean_config_with_properties() {
         Stream<Injector> build = injectorBuilder.build(WithProperties.class);
 
         verify(config, never()).getConfig(anyString());
@@ -87,7 +84,7 @@ public class InjectorBuilderTest {
     }
 
     @Test
-    public void bean_config_with_resolve() {
+    void bean_config_with_resolve() {
         when(config.resolve())
                 .thenReturn(config);
 
@@ -99,9 +96,8 @@ public class InjectorBuilderTest {
     }
 
     @Test
-    public void bean_config_with_path() {
-        when(config.getConfig("path"))
-                .thenReturn(config);
+    void bean_config_with_path() {
+        when(config.getConfig("path")).thenReturn(config);
 
         Stream<Injector> build = injectorBuilder.build(WithPath.class);
 
@@ -110,21 +106,21 @@ public class InjectorBuilderTest {
         assertThat(build.count(), is(1L));
     }
 
-    @Test(expected = ConfigException.class)
-    public void bind_config_with_invalid_path_must_throw_a_exception() {
+    @Test
+    void bind_config_with_invalid_path_must_throw_a_exception() {
         when(config.getConfig("path"))
                 .thenThrow(ConfigException.BadPath.class);
 
-        injectorBuilder.build(WithPath.class);
+        assertThrows(ConfigException.class, () -> injectorBuilder.build(WithPath.class));
     }
 
     @BindConfig(value = "rootPath")
-    public static class NoProperty {
+    static class NoProperty {
 
     }
 
     @BindConfig(value = "rootPath")
-    public static class WithProperties {
+    static class WithProperties {
         @InjectConfig
         private Optional<String> p1;
         @InjectConfig
@@ -132,13 +128,13 @@ public class InjectorBuilderTest {
     }
 
     @BindConfig(value = "rootPath", resolve = true)
-    public static class WithResolve {
+    static class WithResolve {
         @InjectConfig
         private Optional<String> p1;
     }
 
     @BindConfig(value = "rootPath", path = "path")
-    public static class WithPath {
+    static class WithPath {
         @InjectConfig
         private Optional<String> p1;
     }

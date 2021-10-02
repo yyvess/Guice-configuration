@@ -26,21 +26,18 @@ import net.jmob.guice.conf.core.internal.injector.Injector;
 import net.jmob.guice.conf.core.internal.injector.InjectorBuilder;
 import net.jmob.guice.conf.core.internal.virtual.BeanValidator;
 import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
-public class ConfigurationListenerTest {
-
-    @Rule
-    public MockitoRule mockito = MockitoJUnit.rule();
+@ExtendWith(MockitoExtension.class)
+class ConfigurationListenerTest {
 
     @Mock
     private TypeLiteral typeLiteral;
@@ -57,20 +54,18 @@ public class ConfigurationListenerTest {
     @Mock
     private BeanValidator beanValidator;
 
-    private VirtualBeanFactory virtualBeanFactory;
-
     private InjectorBuilder injectorBuilder;
 
-    @Before
-    public void initializeMock() {
-        virtualBeanFactory = new VirtualBeanFactory(beanValidator);
+    @BeforeEach
+    void initializeMock() {
+        VirtualBeanFactory virtualBeanFactory = new VirtualBeanFactory(beanValidator);
         injectorBuilder = new InjectorBuilder(configFactory, virtualBeanFactory);
-        when(configFactory.parseResources(anyString(), any(ConfigParseOptions.class)))
+        lenient().when(configFactory.parseResources(anyString(), any(ConfigParseOptions.class)))
                 .thenReturn(config);
     }
 
     @Test
-    public void no_class_match() {
+    void no_class_match() {
         when(typeLiteral.getRawType())
                 .thenReturn(String.class);
         new ConfigurationListener(injectorBuilder)
@@ -79,7 +74,7 @@ public class ConfigurationListenerTest {
     }
 
     @Test
-    public void one_class_match() {
+    void one_class_match() {
         when(typeLiteral.getRawType())
                 .thenReturn(ConfiguredClass.class);
         new ConfigurationListener(injectorBuilder)
@@ -88,7 +83,7 @@ public class ConfigurationListenerTest {
     }
 
     @Test
-    public void super_class_match() {
+    void super_class_match() {
         when(typeLiteral.getRawType())
                 .thenReturn(Extends.class);
         new ConfigurationListener(injectorBuilder)
@@ -97,7 +92,7 @@ public class ConfigurationListenerTest {
     }
 
     @BindConfig(value = "rootPath")
-    public static class ConfiguredClass {
+    static class ConfiguredClass {
         @InjectConfig
         private Optional<String> p1;
     }

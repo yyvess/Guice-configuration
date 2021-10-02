@@ -45,7 +45,7 @@ public class InjectorBuilder {
         this.virtualBeanFactory = virtualBeanFactory;
     }
 
-    public Stream<Injector> build(Class beanClass) {
+    public Stream<Injector> build(Class<?> beanClass) {
         final Config config = getConfig(configFactory, getOptions(beanClass), getAnnotationConfiguration(beanClass));
         return stream(beanClass.getDeclaredFields())
                 .filter(f -> f.isAnnotationPresent(InjectConfig.class))
@@ -74,11 +74,11 @@ public class InjectorBuilder {
         return isNullOrEmpty(annotationValue) ? f.getName() : annotationValue;
     }
 
-    private ConfigParseOptions getOptions(Class beanClass) {
+    private ConfigParseOptions getOptions(Class<?> beanClass) {
         return defaults().setSyntax(ConfigSyntax.valueOf(getAnnotationConfiguration(beanClass).syntax().name()));
     }
 
-    private BindConfig getAnnotationConfiguration(Class beanClass) {
-        return (BindConfig) beanClass.getAnnotationsByType(BindConfig.class)[0];
+    private BindConfig getAnnotationConfiguration(Class<?> beanClass) {
+        return beanClass.getAnnotationsByType(BindConfig.class)[0];
     }
 }

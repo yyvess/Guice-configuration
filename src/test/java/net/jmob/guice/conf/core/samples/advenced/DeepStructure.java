@@ -21,19 +21,19 @@ import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.ConfigurationModule;
 import net.jmob.guice.conf.core.InjectConfig;
 import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.google.inject.Guice.createInjector;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.isNotNull;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_02", path = "root")
-public class DeepStructure {
+class DeepStructure {
 
     @InjectConfig(value = "port")
     private int port;
@@ -41,19 +41,19 @@ public class DeepStructure {
     @InjectConfig("complexEntries")
     private TypedEntry config;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         createInjector(new GuiceModule(this));
     }
 
     @Test
-    public void test() {
+    void test() {
         assertThat(port, is(12));
         assertThat(config, notNullValue());
         assertThat(config.getValue(), is("Hello World"));
-        assertNotNull(config.getSubType());
+        assertThat(config.getSubType(), isNotNull());
         assertThat(config.getSubType().getIntValue(), is(of(9876)));
-        assertNotNull(config.getAMap());
+        assertThat(config.getAMap(), isNotNull());
         assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap().get("key1"), is("value1"));
         assertThat(config.getAMap().get("key2"), is("value2"));
@@ -70,11 +70,11 @@ public class DeepStructure {
         assertThat(config.hashCode(), is(-247958911));
     }
 
-    public static class GuiceModule extends AbstractModule {
+    static class GuiceModule extends AbstractModule {
 
         private final Object test;
 
-        public GuiceModule(Object test) {
+        GuiceModule(Object test) {
             this.test = test;
         }
 
