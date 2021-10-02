@@ -19,16 +19,16 @@ import com.google.inject.AbstractModule;
 import net.jmob.guice.conf.core.BindConfig;
 import net.jmob.guice.conf.core.ConfigurationModule;
 import net.jmob.guice.conf.core.InjectConfig;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.google.inject.Guice.createInjector;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertThat;
 
 @BindConfig(value = "net/jmob/guice/conf/core/samples/sample_01")
 public class ConfigFromConf {
@@ -57,7 +57,7 @@ public class ConfigFromConf {
     @InjectConfig("complexEntries")
     private ServiceConfiguration config;
 
-    @Before
+    @BeforeEach
     public void init() {
         createInjector(new GuiceModule(this));
     }

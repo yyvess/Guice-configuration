@@ -139,7 +139,7 @@ public class VirtualBeanFactory {
                 .collect(toMap(Entry::getKey, Entry::getValue)));
     }
 
-    private Entry<String, Map> buildChildEntry(Method m, String key, Map<String, Object> values) {
+    private Entry<String, Map<?,?>> buildChildEntry(Method m, String key, Map<String, Object> values) {
         return new SimpleImmutableEntry(key, newProxyInstance(getType(m), values));
     }
 

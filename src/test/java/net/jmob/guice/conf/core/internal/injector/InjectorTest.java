@@ -16,23 +16,21 @@
 package net.jmob.guice.conf.core.internal.injector;
 
 import net.jmob.guice.conf.core.internal.virtual.VirtualBeanFactory;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class InjectorTest {
-
-    @Rule
-    public MockitoRule mockito = MockitoJUnit.rule();
+@ExtendWith(MockitoExtension.class)
+class InjectorTest {
 
     private String target = "Test";
 
@@ -41,23 +39,23 @@ public class InjectorTest {
 
 
     @Test
-    public void injectValue() throws IllegalAccessException, NoSuchFieldException {
+    void injectValue() throws IllegalAccessException, NoSuchFieldException {
         inject("Hello", true);
     }
 
     @Test
-    public void injectNull() throws IllegalAccessException, NoSuchFieldException {
+    void injectNull() throws IllegalAccessException, NoSuchFieldException {
         inject(null, true);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void injectInvalidType() throws IllegalAccessException, NoSuchFieldException {
-        inject(BigDecimal.ZERO, true);
+    @Test
+    void injectInvalidType() {
+        assertThrows(IllegalArgumentException.class, () -> inject(BigDecimal.ZERO, true));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void notAccessibleField() throws IllegalAccessException, NoSuchFieldException {
-        inject("Hello", false);
+    @Test
+    void notAccessibleField() {
+        assertThrows(RuntimeException.class, () -> inject("Hello", false));
     }
 
     private void inject(Object value, boolean accessible) throws NoSuchFieldException,

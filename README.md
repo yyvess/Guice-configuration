@@ -1,8 +1,9 @@
 Guice configuration module, JSON, HOCON & Properties formats supported, build on the top of Typesafe config
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.jmob/guice.conf) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 [![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=alert_status)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)  [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=net.jmob%3Aguice.conf&metric=coverage)](https://sonarcloud.io/dashboard?id=net.jmob%3Aguice.conf)
+
 
 Guice configuration
 ======
@@ -21,7 +22,7 @@ You can find published releases on Maven Central.
 		<dependency>
 			<groupId>net.jmob</groupId>
 			<artifactId>guice.conf</artifactId>
-			<version>1.4.3</version>
+			<version>1.5.0</version>
 		</dependency>
 		
 Optionally, to active validation, you must import a validator like Hibernate validator
@@ -29,7 +30,7 @@ Optionally, to active validation, you must import a validator like Hibernate val
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator-cdi</artifactId>
-            <version>6.0.15.Final</version>
+            <version>6.2.0.Final</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish</groupId>

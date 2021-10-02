@@ -24,18 +24,17 @@ import net.jmob.guice.conf.core.samples.advenced.service.Service;
 import net.jmob.guice.conf.core.samples.advenced.service.ServiceConf;
 import net.jmob.guice.conf.core.samples.advenced.service.ServiceJson;
 import net.jmob.guice.conf.core.samples.advenced.service.TypedEntry;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.inject.Named;
 
 import static com.google.inject.name.Names.named;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
-public class ProgrammaticallyBinding {
+class ProgrammaticallyBinding {
 
     @Inject
     @Named("Conf")
@@ -45,19 +44,19 @@ public class ProgrammaticallyBinding {
     @Named("Json")
     private Service serviceJson;
 
-    @Before
-    public void init() {
+    @BeforeEach
+    void init() {
         Guice.createInjector(new GuiceModule(this));
     }
 
     @Test
-    public void testConf() {
+    void testConf() {
         assertThat(serviceConf.getPort(), is(12));
         check(serviceConf);
     }
 
     @Test
-    public void testJson() {
+    void testJson() {
         assertThat(serviceJson.getPort(), is(13));
         check(serviceJson);
     }
@@ -67,7 +66,7 @@ public class ProgrammaticallyBinding {
         assertThat(config, notNullValue());
 
         assertThat(config.getValue(), is("Hello World"));
-        assertNotNull(config.getAMap());
+        assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap(), notNullValue());
         assertThat(config.getAMap().get("key1"), is("value1"));
         assertThat(config.getAMap().get("key2"), is("value2"));
@@ -79,11 +78,11 @@ public class ProgrammaticallyBinding {
         assertThat(config.hashCode(), is(-247958911));
     }
 
-    public static class GuiceModule extends AbstractModule {
+    static class GuiceModule extends AbstractModule {
 
         private final ProgrammaticallyBinding programmaticallyBinding;
 
-        public GuiceModule(ProgrammaticallyBinding programmaticallyBinding) {
+        GuiceModule(ProgrammaticallyBinding programmaticallyBinding) {
             this.programmaticallyBinding = programmaticallyBinding;
         }
 

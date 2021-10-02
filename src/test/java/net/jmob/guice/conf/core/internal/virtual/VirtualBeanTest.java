@@ -16,24 +16,25 @@
 
 package net.jmob.guice.conf.core.internal.virtual;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Thread.currentThread;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.hamcrest.core.IsSame.sameInstance;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class VirtualBeanTest {
+class VirtualBeanTest {
 
     @Test
-    public void virtual_bean_test() {
+    void virtual_bean_test() {
         Map<String, Object> values = new HashMap<>();
         values.put("v", "short");
         values.put("value", "testing");
@@ -56,18 +57,18 @@ public class VirtualBeanTest {
         assertThat(service2, not(is(new Object())));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void testBadMethodName() {
+    @Test
+    void testBadMethodName() {
         Map<String, Object> values = new HashMap<>();
         ServiceConfig service = newProxy(values);
-        service.testBadMethodName();
+        assertThrows(RuntimeException.class, service::testBadMethodName);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testNullPointer() {
+    @Test
+    void testNullPointer() {
         Map<String, Object> values = new HashMap<>();
         ServiceConfig service = newProxy(values);
-        service.getIntNull();
+        assertThrows(  NullPointerException.class, service::getIntNull);
     }
 
     private ServiceConfig newProxy(Map<String, Object> values) {
