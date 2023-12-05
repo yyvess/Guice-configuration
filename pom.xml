@@ -40,7 +40,7 @@
         <guice.version>5.0.1</guice.version>
         <junit.version>5.8.1</junit.version>
         <typesafe.version>1.4.1</typesafe.version>
-        <logback.version>1.2.6</logback.version>
+        <logback.version>1.2.13</logback.version>
         <validation-api.versoin>2.0.1.Final</validation-api.versoin>
         <mockito.version>3.12.4</mockito.version>
         <project.scm.id>github</project.scm.id>
